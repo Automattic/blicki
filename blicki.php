@@ -64,14 +64,18 @@ class Blicki {
 
 		if ( 'blicki' === $post->post_type ) {
 			// add TOC
-			$new_content = "<h1>TOC goes here</h1>" . $content;
+			$toc = "<h1>TOC goes here</h1>";
 
 			// add editor
-			$new_content .= "<div id='editor'" . $post->ID . "'/>";
+			ob_start();
 			wp_editor( $content, 'editor' . $post->ID );
+			$editor = ob_get_clean();
+
+			$new_content = sprintf( "<div style='border: 1px solid black;'><span>Content tab</span>%s%s</div><div style='border: 1px solid black;'><span>Editor tab</span>%s</div>", $toc, $content, $editor );
+			return $new_content;
 		}
 
-		return $new_content;
+		return $content;
 	}
 }
 new Blicki();
