@@ -66,6 +66,7 @@ class Blicki {
      */
     public function scripts() {
 		wp_enqueue_script( 'blicki_js', plugins_url( 'blicki.js', __FILE__ ), array( 'jquery' ), '1.0.0', true );
+		wp_enqueue_style( 'blicki_css', plugins_url( 'css/blicki.css', __FILE__ ), false );
     }
 
 	/**
@@ -82,7 +83,7 @@ class Blicki {
 			$editor = $this->get_editor( $content, $post->ID );
 
 			// TODO redo this with an output buffer
-			$new_content = sprintf( "<div id='post-wrapper-%d' class='post-wrapper' style='border: 1px solid black;'><span>Content tab</span>%s%s</div><div style='border: 1px solid black;'><span>Editor tab</span>%s</div>", esc_attr( $post->ID), $toc, $content, $editor );
+			$new_content = sprintf( "<div id='post-wrapper-%d' class='post-wrapper' style='border: 1px solid black;'><span>Content tab</span>%s%s</div><div><span>Editor tab</span>%s</div>", esc_attr( $post->ID), $toc, $content, $editor );
 			return $new_content;
 		}
 
@@ -94,11 +95,12 @@ class Blicki {
 	 */
 	private function get_editor( $content, $id ) {
 		ob_start();
-		wp_editor( $content, 'editor' . $id );
+		$settings = array( 'media_buttons' => false, 'quicktags' => false );
+		wp_editor( $content, 'editor' . $id, $settings );
 		$editor = ob_get_clean();
 
 		// TODO redo this with an output buffer and proper escaping
-		$ret = sprintf( "<form><label for='email%d'>Email:</label><input style='text' name='email%d' placeholder='Enter your e-mail address' id='email%d' />%s<button type='submit'>Submit</button></form>", $id, $id, $id, $editor );
+		$ret = sprintf( "<form class='blicki__edit'>%s<div class='blicki__edit-details'><label for='email%d'>Enter your email address:</label><input type='email' name='email%d' placeholder='email@example.com' id='email%d' /><button type='submit' class='blicki__edit-submit'>Submit Changes</button><a class='blicki__edit-cancel'>Cancel</a></form>", $editor, $id, $id, $id );
 		return $ret;
 	}
 }

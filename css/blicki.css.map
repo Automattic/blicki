@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAGA,aAAc;EACb,UAAU,ECHK,OAAO;;ADMvB,qBAAsB;EACrB,UAAU,ECNK,OAAO;EDOtB,UAAU,EAAE,GAAG;EACf,OAAO,EAAE,KAAK;EAEd,uCAAkB;IACjB,UAAU,ECZI,OAAO;;ADgBvB,oBAAqB;EACpB,MAAM,EAAE,YAAY",
+"sources": ["blicki.scss","_colors.scss"],
+"names": [],
+"file": "blicki.css"
+}
