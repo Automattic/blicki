@@ -64,9 +64,9 @@ class Blicki_CPT {
             ) )
         );
 		register_post_type( 'blicki-revision', array(
-			'public'   => true, // @todo
+			'public'   => false,
 			'supports' => array(),
-			'show_ui'  => true,
+			'show_ui'  => false,
 		) );
 
         /*
