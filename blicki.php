@@ -11,19 +11,37 @@
  * Domain Path: /languages/
  * License: GPL2+
  */
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Main Bliki class.
+ */
 class Blicki {
 
     /**
      * Constructor.
      */
     public function __construct() {
-        add_action( 'after_setup_theme', array( $this, 'load_plugin_textdomain' ) );
+        // Blicki constants.
+        define( 'BLICKI_FILE', __FILE__ );
+        define( 'BLICKI_DIR', trailingslashit( dirname( __FILE__ ) ) );
+
+        register_activation_hook( basename( BLICKI_DIR ) . '/' . basename( BLICKI_FILE ), array( $this, 'activate' ) );
+
+        add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
+        add_action( 'plugins_loaded', array( $this, 'includes' ) );
     }
+
+    /**
+	 * Called on plugin activation
+	 */
+	public function activate() {
+        $this->includes();
+		Blicki_CPT::register_post_types();
+		flush_rewrite_rules();
+	}
 
     /**
      * Textdomain.
@@ -32,5 +50,11 @@ class Blicki {
         load_plugin_textdomain( 'blicki', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
     }
 
+    /**
+     * Includes.
+     */
+    public function includes() {
+        include_once( BLICKI_DIR . 'includes/class-blicki-cpt.php' );
+    }
 }
 new Blicki();
