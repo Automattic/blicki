@@ -59,6 +59,9 @@ class Blicki {
         include_once( BLICKI_DIR . 'includes/class-blicki-cpt.php' );
     }
 
+	/**
+	 * Filter for 'the_content' to wrap a wiki entry in all our custom code.
+	 */
 	public function wrap_wiki( $content ) {
 		global $post;
 
@@ -67,15 +70,25 @@ class Blicki {
 			$toc = "<h1>TOC goes here</h1>";
 
 			// add editor
-			ob_start();
-			wp_editor( $content, 'editor' . $post->ID );
-			$editor = ob_get_clean();
+			$editor = $this->get_editor( $content, $post->ID );
 
 			$new_content = sprintf( "<div style='border: 1px solid black;'><span>Content tab</span>%s%s</div><div style='border: 1px solid black;'><span>Editor tab</span>%s</div>", $toc, $content, $editor );
 			return $new_content;
 		}
 
 		return $content;
+	}
+
+	/**
+	 * Produces the HTML for our frontend editor component.
+	 */
+	private function get_editor( $content, $id ) {
+		ob_start();
+		wp_editor( $content, 'editor' . $id );
+		$editor = ob_get_clean();
+
+		$ret = sprintf( "<form><label for='email%d'>Email:</label><input style='text' name='email%d' placeholder='Enter your e-mail address' id='email%d' />%s<button type='submit'>Submit</button></form>", $id, $id, $id, $editor );
+		return $ret;
 	}
 }
 new Blicki();
