@@ -32,6 +32,8 @@ class Blicki {
 
         add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
         add_action( 'plugins_loaded', array( $this, 'includes' ) );
+
+		add_filter( 'the_content', array( $this, 'wrap_wiki' ) );
     }
 
     /**
@@ -56,5 +58,20 @@ class Blicki {
     public function includes() {
         include_once( BLICKI_DIR . 'includes/class-blicki-cpt.php' );
     }
+
+	public function wrap_wiki( $content ) {
+		global $post;
+
+		if ( 'blicki' === $post->post_type ) {
+			// add TOC
+			$new_content = "<h1>TOC goes here</h1>" . $content;
+
+			// add editor
+			$new_content .= "<div id='editor'" . $post->ID . "'/>";
+			wp_editor( $content, 'editor' . $post->ID );
+		}
+
+		return $new_content;
+	}
 }
 new Blicki();
