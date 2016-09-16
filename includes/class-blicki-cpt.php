@@ -57,13 +57,20 @@ class Blicki_CPT {
                     'pages'      => false,
                 ),
                 'query_var'         => true,
-                'supports'          => array( 'title', 'editor', 'revisions' ),
+                'supports'          => array( 'title', 'editor' ),
                 'has_archive'       => _x( 'wiki', 'Blicki post type archive slug - resave permalinks after changing this', 'blicki' ),
                 'show_in_nav_menus' => false,
                 'menu_icon'         => 'dashicons-media-text',
             ) )
         );
+		register_post_type( 'blicki-revision', array(
+			'public'   => true, // @todo
+			'supports' => array(),
+			'show_ui'  => true,
+		) );
 
+        /*
+        @todo in the future
         $singular = __( 'Topic', 'blicki' );
         $plural   = __( 'Topics', 'blicki' );
         register_taxonomy(
@@ -95,7 +102,7 @@ class Blicki_CPT {
 					'hierarchical' => false
 				),
             ) )
-        );
+        );*/
     }
 }
 new Blicki_CPT();
