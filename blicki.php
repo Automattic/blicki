@@ -32,6 +32,7 @@ class Blicki {
 
         add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
         add_action( 'plugins_loaded', array( $this, 'includes' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'scripts' ) );
 
 		add_filter( 'the_content', array( $this, 'wrap_wiki' ) );
     }
@@ -59,6 +60,13 @@ class Blicki {
         include_once( BLICKI_DIR . 'includes/class-blicki-cpt.php' );
     }
 
+    /**
+     * Scripts.
+     */
+    public function scripts() {
+		wp_enqueue_script( 'blicki_js', plugins_url( 'blicki.js', __FILE__ ), array( 'jquery' ), '1.0.0', true );
+    }
+
 	/**
 	 * Filter for 'the_content' to wrap a wiki entry in all our custom code.
 	 */
@@ -67,12 +75,13 @@ class Blicki {
 
 		if ( 'blicki' === $post->post_type ) {
 			// add TOC
-			$toc = "<h1>TOC goes here</h1>";
+			$toc = "<div class='toc'></div>";
 
 			// add editor
 			$editor = $this->get_editor( $content, $post->ID );
 
-			$new_content = sprintf( "<div style='border: 1px solid black;'><span>Content tab</span>%s%s</div><div style='border: 1px solid black;'><span>Editor tab</span>%s</div>", $toc, $content, $editor );
+			// TODO redo this with an output buffer
+			$new_content = sprintf( "<div id='post-wrapper-%d' class='post-wrapper' style='border: 1px solid black;'><span>Content tab</span>%s%s</div><div style='border: 1px solid black;'><span>Editor tab</span>%s</div>", esc_attr( $post->ID), $toc, $content, $editor );
 			return $new_content;
 		}
 
@@ -87,6 +96,7 @@ class Blicki {
 		wp_editor( $content, 'editor' . $id );
 		$editor = ob_get_clean();
 
+		// TODO redo this with an output buffer and proper escaping
 		$ret = sprintf( "<form><label for='email%d'>Email:</label><input style='text' name='email%d' placeholder='Enter your e-mail address' id='email%d' />%s<button type='submit'>Submit</button></form>", $id, $id, $id, $editor );
 		return $ret;
 	}
