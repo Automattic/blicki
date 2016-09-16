@@ -1,5 +1,5 @@
 # Blicki 
-**Contributors:** danhauk, lschuyler, mikejolley, singerb, therichmonderatlarge  
+**Contributors:** benedictsinger, danhauk, lschuyler, mikejolley, therichmonderatlarge  
 **Tags:** wiki  
 **Requires at least:** 4.6.1  
 **Tested up to:** 4.6.1  
