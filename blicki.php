@@ -58,6 +58,7 @@ class Blicki {
      */
     public function includes() {
         include_once( BLICKI_DIR . 'includes/class-blicki-cpt.php' );
+        include_once( BLICKI_DIR . 'includes/class-blicki-revisions.php' );
     }
 
     /**
