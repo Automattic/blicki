@@ -1,0 +1,20 @@
+// Blicki!
+@import "_colors.scss";
+
+.blicki__edit {
+	background: $white;
+}
+
+.blicki__edit-details {
+	background: $gray-light;
+	margin-top: 2em;
+	padding: 1.5em;
+
+	input[type=email] {
+		background: $white;
+	}
+}
+
+.blicki__edit-submit {
+	margin: 1em 20px 0 0;
+}
