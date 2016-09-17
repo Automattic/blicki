@@ -22,7 +22,7 @@ class Blicki_Edit_Form {
 		// use an output buffer here because of wp_editor
 		// and it lets us construct the additional fields normally
 		ob_start();
-		$settings = array( 'media_buttons' => false, 'quicktags' => false );
+		$settings = array( 'media_buttons' => false, 'quicktags' => false, 'editor_height' => 400 );
 		?>
 		<form class='blicki__edit' method='post'>
 			<div class='blicki__edit-details'>
