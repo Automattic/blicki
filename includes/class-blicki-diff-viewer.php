@@ -105,7 +105,18 @@ class Blicki_Diff_Viewer {
 		$source = get_post( $source_id );
 		$suggestion = get_post( $suggestion_id );
 
-		$diff_html = wp_text_diff( $source->post_title . "\n" . $source->post_content, $suggestion->post_title . "\n" . $suggestion->post_content, array( 'title' => __( 'Suggestion differences', 'blicki' ), 'title_left' => __( 'Original', 'blicki' ), 'title_right' => __( 'Suggested', 'blicki' ) ) );
+		$original_date = date_i18n( get_option( 'date_format' ), strtotime( $source->post_date ) );
+		$suggestion_date = date_i18n( get_option( 'date_format' ), strtotime( $suggestion->post_date ) );
+
+		$diff_html = wp_text_diff(
+			$source->post_title . "\n" . $source->post_content,
+			$suggestion->post_title . "\n" . $suggestion->post_content,
+			array(
+				'title' => __( 'Suggestion differences', 'blicki' ),
+				'title_left' => sprintf( __( 'Original, %s', 'blicki' ), $original_date ),
+				'title_right' => sprintf( __( 'Suggested, %s', 'blicki' ), $suggestion_date )
+			)
+		);
 
 		echo $diff_html;
 	}

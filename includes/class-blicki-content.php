@@ -81,7 +81,19 @@ class Blicki_Content {
 				$revision = get_post( $revision_id );
 				$revision_text = $revision->post_title . "\n" . $revision->post_content;
 
-				$diff_html = wp_text_diff( $source_text, $revision_text, array( 'title' => __( 'Revision Changes', 'blicki' ), 'title_left' => __( 'Original', 'blicki' ), 'title_right' => __( 'Revised', 'blicki' ) ) );
+				$source_date = date_i18n( get_option( 'date_format' ), strtotime( $source->post_date ) );
+				$revision_date = date_i18n( get_option( 'date_format' ), strtotime( $revision->post_date ) );
+
+
+				$diff_html = wp_text_diff(
+					$source_text,
+					$revision_text,
+					array(
+						'title' => __( 'Revision Changes', 'blicki' ),
+						'title_left' => sprintf( __( 'Original, %s', 'blicki' ), $source_date ),
+						'title_right' => sprintf( __( 'Revised, %s', 'blicki' ), $revision_date )
+					)
+				);
 
 				echo $diff_html;
 
