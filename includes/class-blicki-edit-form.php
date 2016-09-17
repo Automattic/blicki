@@ -99,7 +99,7 @@ class Blicki_Edit_Form {
 				$post_author = 0;
 			}
 
-            $content = implode( "\n", array_map( 'sanitize_text_field', explode( "\n", $_POST[  'blicki-editor-' . $entry_id ] ) ) );
+            $content = wp_kses_post( $_POST[  'blicki-editor-' . $entry_id ] );
 
 			// Check name is valid.
             if ( ! $post_author && empty( $name ) ) {
@@ -117,11 +117,11 @@ class Blicki_Edit_Form {
 			}
 
 			$suggestion_id = Blicki_Suggestion::create_suggestion( $entry_id, array(
-                'post_title'   => $entry->post_title,
-                'post_content' => $content,
-                'post_author'  => $post_author,
-				'author_email'             => $email,
-				'author_name'              => $name,
+				'post_title'   => $entry->post_title,
+				'post_content' => $content,
+				'post_author'  => $post_author,
+				'author_email' => $email,
+				'author_name'  => $name,
             ) );
 
             Blicki_Notices::add( __( 'Thanks for submitting your suggestion. A moderator will approve your changes as soon as possible.', 'blicki' ), 'success' );
