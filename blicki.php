@@ -97,7 +97,7 @@ class Blicki {
 				<?php
 			} else {
 				// showing the post with editor, etc
-				$toc = "<div class='toc'></div>";
+				$toc = "<ol class='blicki__toc'></ol>";
 
 				// add editor
 				$editor = $this->get_editor( $content, $post->ID );
