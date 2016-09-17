@@ -11,10 +11,10 @@ A Knowledge Evolution Revolution: Contribute with ease. Watch how information ch
 
 A Blicki is a blog and a wiki. The purpose is to create a platform on which anyone can share knowledge. The blicki makes it easy to contribute with a front-end blog editor, while showing how information is added to and evolved.
 
+
 =Features=
 
 * Front-end blog-style editor. No markdown required.
-
 * Anyone can edit. Visitors do not need to create an account to contribute.
 * An admin role has the ability to moderate new pages and edits.
 * Revision history and stats show at the footer of each blicki entry.

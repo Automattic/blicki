@@ -16,7 +16,6 @@ A Blicki is a blog and a wiki. The purpose is to create a platform on which anyo
 ###Features
 
 * Front-end blog-style editor. No markdown required.
-
 * Anyone can edit. Visitors do not need to create an account to contribute.
 * An admin role has the ability to moderate new pages and edits.
 * Revision history and stats show at the footer of each blicki entry.
