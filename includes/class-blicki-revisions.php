@@ -100,7 +100,7 @@ class Blicki_Revision {
      * @param int $post_id
      * @param array $data
      */
-    private function create_revision( $post_id, $data ) {
+    public static function create_revision( $post_id, $data ) {
         return (int) wp_insert_post( array(
             'post_type'    => 'blicki-revision',
             'post_title'   => $data['post_title'],

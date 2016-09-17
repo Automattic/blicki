@@ -60,6 +60,8 @@ class Blicki {
         include_once( BLICKI_DIR . 'includes/class-blicki-cpt.php' );
         include_once( BLICKI_DIR . 'includes/class-blicki-revisions.php' );
         include_once( BLICKI_DIR . 'includes/class-blicki-diff-viewer.php' );
+		include_once( BLICKI_DIR . 'includes/class-blicki-edit-form.php' );
+		include_once( BLICKI_DIR . 'includes/class-blicki-notices.php' );
     }
 
     /**
@@ -77,6 +79,9 @@ class Blicki {
 		global $post;
 
 		if ( 'blicki' === $post->post_type ) {
+			// Add notices
+			Blicki_Notices::display();
+
 			// add TOC
 			$toc = "<div class='toc'></div>";
 
@@ -111,12 +116,13 @@ class Blicki {
 		ob_start();
 		$settings = array( 'media_buttons' => false, 'quicktags' => false );
 		?>
-		<form class='blicki__edit'>
-			<?php wp_editor( $content, 'editor' . $id, $settings ); ?>
+		<form class='blicki__edit' method='post'>
+			<?php wp_editor( $content, 'blicki-editor-' . $id, $settings ); ?>
 			<div class='blicki__edit-details'>
-				<label for='email<?= esc_attr( $id ); ?>'>Enter your email address:</label>
-				<input type='email' name='email<?= esc_attr( $id ); ?>' placeholder='email@example.com' id='email<?= esc_attr( $id ); ?>' />
-				<button type='submit' class='blicki__edit-submit'>Submit Changes</button>
+				<label for='email<?php echo esc_attr( $id ); ?>'>Enter your email address:</label>
+				<input type='email' name='blicki-email-<?php echo esc_attr( $id ); ?>' placeholder='email@example.com' id='email<?php echo esc_attr( $id ); ?>' />
+				<button type='submit' class='blicki__edit-submit' name='blicki-edit-form'>Submit Changes</button>
+				<input type='hidden' name='blicki-edit-entry' value="<?php echo esc_attr( $id ); ?>" />
 				<a class='blicki__edit-cancel'>Cancel</a>
 			</div>
 		</form>
