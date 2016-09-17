@@ -142,7 +142,7 @@ class Blicki_Suggestion {
 		}
 
         $post_id   = $post->ID;
-        $suggestions = $this->get_suggestions_for_entry( $post_id );
+        $suggestions = $this->get_suggestions_for_entry( $post_id, 'pending' );
 
         if ( $suggestions ) {
             echo '<ul class="blicki-suggestion-list">';

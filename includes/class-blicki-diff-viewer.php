@@ -48,14 +48,14 @@ class Blicki_Diff_Viewer {
 
 		$nonce_name = 'moderate-post-' . $source_id . '-' . $suggestion_id;
 
-		if ( isset( $_POST['action'] ) ) {
+		if ( isset( $_REQUEST['action'] ) ) {
 			// handle our actions here; approve, reject, maybe edit in the future
 			check_admin_referer( $nonce_name );
 
 			$source = get_post( $source_id );
 			$suggestion = get_post( $suggestion_id );
 
-			if ( 'approve' == $_POST['action'] ) {
+			if ( 'approve' === $_REQUEST['action'] ) {
 				$id = wp_update_post( array(
 					'ID' => $source_id,
 					'post_title' => $suggestion->post_title,
@@ -81,7 +81,7 @@ class Blicki_Diff_Viewer {
 				remove_action( '_wp_put_post_revision', array( $this, 'store_extra_revision_meta' ) );
 
 				echo "<h2>" . __( 'Suggestion Approved', 'blicki' ) . "</h2>";
-			} else if ( 'reject' == $_POST['action'] ) {
+			} else if ( 'reject' === $_REQUEST['action'] ) {
 				wp_delete_post( $suggestion_id );
 				echo "<h2>" . __( 'Suggestion Rejected', 'blicki' ) . "</h2>";
 			}
@@ -89,24 +89,6 @@ class Blicki_Diff_Viewer {
 		} else {
 			// this does the diff viewer, also used on front end
 			$this->show_diffs( $source_id, $suggestion_id );
-
-			// TODO approve/reject buttons need some styling perhaps?
-			?>
-			<p><?php _e( 'Select one of the following actions:', 'blicki' ); ?></p>
-			<ul>
-				<form method='POST'>
-					<?php wp_nonce_field( $nonce_name ); ?>
-					<input type='hidden' name='action' value='reject'>
-					<li><button type='submit'><?php _e( 'Reject Suggestion', 'blicki' ); ?></button></li>
-				</form>
-				<form method='POST'>
-					<?php wp_nonce_field( $nonce_name ); ?>
-					<input type='hidden' name='action' value='approve'>
-					<li><button type='submit'><?php _e( 'Approve Suggestion', 'blicki' ); ?></button></li>
-				</form>
-				<li><a href='<?php echo add_query_arg( array( 'post' => $source_id, 'action' => 'edit', 'merge_from' => $suggestion_id ), 'post.php' ); ?>'><?php _e( 'Edit merged version', 'blicki' ); ?></a></li>
-			</ul>
-			<?php
 		}
 	}
 
@@ -115,12 +97,24 @@ class Blicki_Diff_Viewer {
 	 */
 	public static function show_diffs( $source_id, $suggestion_id ) {
 		// get posts, call wp_text_diff
-		$source = get_post( $source_id );
-		$suggestion = get_post( $suggestion_id );
+		$source      = get_post( $source_id );
+		$suggestion  = get_post( $suggestion_id );
+		$diff_html   = wp_text_diff( $source->post_title . "\n" . $source->post_content, $suggestion->post_title . "\n" . $suggestion->post_content, array( 'title_left' => __( 'Original', 'blicki' ), 'title_right' => __( 'Suggested', 'blicki' ) ) );
+		$contributor = Blicki_Suggestion::get_contributor_for_post( $suggestion_id );
+		$nonce_name = 'moderate-post-' . $source_id . '-' . $suggestion_id;
+		?>
+		<div class="wrap">
+			<h1><?php printf( __( 'Merging suggested changes from %s into &ldquo;%s&rdquo;', 'blicki' ), esc_html( $contributor->name ), esc_html( $source->post_title ) ); ?></h1>
 
-		$diff_html = wp_text_diff( $source->post_title . "\n" . $source->post_content, $suggestion->post_title . "\n" . $suggestion->post_content, array( 'title' => __( 'Suggestion differences', 'blicki' ), 'title_left' => __( 'Original', 'blicki' ), 'title_right' => __( 'Suggested', 'blicki' ) ) );
+			<div style="margin: 1em 0; padding: 10px; overflow: hidden; background: #fbfbfb; line-height: 30px;">
+				<a href="<?php echo wp_nonce_url( add_query_arg( 'action', 'approve' ), $nonce_name ); ?>" class="button button-large button-primary"><?php _e( 'Approve Suggestion', 'blicki' ); ?></a>
+				&nbsp;&nbsp;<a href="<?php echo wp_nonce_url( add_query_arg( 'action', 'reject' ), $nonce_name ); ?>" class="button button-large delete"><?php _e( 'Reject Suggestion', 'blicki' ); ?></a>
+				&nbsp;&nbsp;<a href='<?php echo esc_url( add_query_arg( array( 'post' => $source_id, 'action' => 'edit', 'merge_from' => $suggestion_id ), 'post.php' ) ); ?>'><?php _e( 'Edit Manually', 'blicki' ); ?></a>
+			</div>
 
-		echo $diff_html;
+			<?php echo $diff_html; ?>
+		</div>
+		<?php
 	}
 
 	public function maybe_merge_content( $content, $post_id ) {
