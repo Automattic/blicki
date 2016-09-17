@@ -13,11 +13,28 @@
 
 .blicki__edit-details {
 	background: $gray-light;
+	border: 1px solid darken( $gray-light, 10% );
 	margin-bottom: 2em;
-	padding: 1.5em;
 
 	input[type=email] {
 		background: $white;
+	}
+}
+
+.blicki__edit-details-editor {
+	margin-bottom: 1em;
+}
+
+.blicki__edit-details-field {
+	padding: 0 1em 1em;
+
+	input[type=text],
+	input[type=email] {
+		width: 60%;
+
+		@media all and ( max-width: 480px ) {
+			width: 100%;
+		}
 	}
 }
 

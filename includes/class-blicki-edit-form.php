@@ -26,24 +26,26 @@ class Blicki_Edit_Form {
 		?>
 		<form class='blicki__edit' method='post'>
 			<div class='blicki__edit-details'>
-				<div class="blicki__edit-details-field">
+				<div class="blicki__edit-details-editor">
 					<?php wp_editor( $content, 'blicki-editor-' . $id, $settings ); ?>
 				</div>
-
+				
 				<?php if ( ! is_user_logged_in() ) : ?>
 					<div class="blicki__edit-details-field">
-						<label for='name<?php echo esc_attr( $id ); ?>'><?php _e( 'Enter your name:', 'blicki' ); ?></label>
+						<label for='name<?php echo esc_attr( $id ); ?>'><?php _e( 'Enter your name:', 'blicki' ); ?></label><br>
 						<input type='text' name='blicki-name-<?php echo esc_attr( $id ); ?>' placeholder='Your Name' id='name<?php echo esc_attr( $id ); ?>' />
 					</div>
 					<div class="blicki__edit-details-field">
-						<label for='email<?php echo esc_attr( $id ); ?>'><?php _e( 'Enter your email address:', 'blicki' ); ?></label>
+						<label for='email<?php echo esc_attr( $id ); ?>'><?php _e( 'Enter your email address:', 'blicki' ); ?></label><br>
 						<input type='email' name='blicki-email-<?php echo esc_attr( $id ); ?>' placeholder='email@example.com' id='email<?php echo esc_attr( $id ); ?>' />
 					</div>
 				<?php endif; ?>
 
-				<button type='submit' class='blicki__edit-submit' name='blicki-edit-form'><?php _e( 'Suggest Changes', 'blicki' ); ?></button>
-				<input type='hidden' name='blicki-edit-entry' value="<?php echo esc_attr( $id ); ?>" />
-				<a href="javascript:;" class='blicki__edit-cancel'><?php _e( 'Cancel', 'blicki' ); ?></a>
+				<div class="blicki__edit-details-field">
+					<button type='submit' class='blicki__edit-submit' name='blicki-edit-form'><?php _e( 'Suggest Changes', 'blicki' ); ?></button>
+					<input type='hidden' name='blicki-edit-entry' value="<?php echo esc_attr( $id ); ?>" />
+					<a href="javascript:;" class='blicki__edit-cancel'><?php _e( 'Cancel', 'blicki' ); ?></a>
+				</div>
 			</div>
 		</form>
 		<?php
