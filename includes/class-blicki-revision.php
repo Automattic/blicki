@@ -33,7 +33,7 @@ class Blicki_Suggestion {
 	/**
 	 * Approve a suggestion if the admin manually merged.
 	 */
-	public function maybe_approve_suggestion() {
+	public function maybe_approve_suggestion( $post_id ) {
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
             return false;
         }
@@ -49,12 +49,9 @@ class Blicki_Suggestion {
         if ( empty( $_POST['blicki-merge-from'] ) ) {
             return false;
         }
+		global $wpdb;
 		$merging_id = absint( $_POST['blicki-merge-from'] );
-
-		wp_update_post( array(
-			'ID'          => $merging_id,
-			'post_status' => 'approved'
-		) );
+		$wpdb->update( $wpdb->posts, array( 'post_status' => 'approved' ), array( 'ID' => $merging_id ) );
 	}
 
     /**

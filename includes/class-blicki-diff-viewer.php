@@ -107,7 +107,7 @@ class Blicki_Diff_Viewer {
 		);
 		?>
 		<div class="wrap">
-			<h1><?php printf( __( 'Merging suggested changes from %s into &ldquo;%s&rdquo;', 'blicki' ), esc_html( $contributor->name ), esc_html( $source->post_title ) ); ?></h1>
+			<h1><?php printf( __( 'Merging suggested changes from %s into &ldquo;%s&rdquo;', 'blicki' ), esc_html( $contributor->name ), '<a href="' . get_edit_post_link( $source_id ) . '">' . esc_html( $source->post_title ) . '</a>' ); ?></h1>
 
 			<div style="margin: 1em 0; padding: 10px; overflow: hidden; background: #fbfbfb; line-height: 30px;">
 				<a href="<?php echo wp_nonce_url( add_query_arg( 'action', 'approve' ), $nonce_name ); ?>" class="button button-large button-primary"><?php _e( 'Approve Suggestion', 'blicki' ); ?></a>
