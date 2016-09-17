@@ -1,0 +1,17 @@
+// Blicki Header
+
+.blicki__header {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	font-size: 0.9em;
+}
+
+.blicki__latest,
+.blicki__actions {
+	margin-bottom: 15px;
+}
+
+.blicki__actions-history {
+	margin-right: 15px;
+}
