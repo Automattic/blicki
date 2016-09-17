@@ -43,7 +43,7 @@ class Blicki_Edit_Form {
 
 				<button type='submit' class='blicki__edit-submit' name='blicki-edit-form'><?php _e( 'Suggest Changes', 'blicki' ); ?></button>
 				<input type='hidden' name='blicki-edit-entry' value="<?php echo esc_attr( $id ); ?>" />
-				<a class='blicki__edit-cancel'>Cancel</a>
+				<a href="javascript:;" class='blicki__edit-cancel'>Cancel</a>
 			</div>
 		</form>
 		<?php

@@ -69,6 +69,13 @@ class Blicki_CPT {
 			'supports' => array(),
 			'show_ui'  => false,
 		) );
+		register_post_status( 'approved', array(
+			'label'                     => __( 'Approved', 'blicki' ),
+			'public'                    => false,
+			'exclude_from_search'       => false,
+			'show_in_admin_all_list'    => false,
+			'show_in_admin_status_list' => false,
+		) );
 
         /*
         @todo in the future

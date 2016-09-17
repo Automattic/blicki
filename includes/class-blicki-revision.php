@@ -186,14 +186,52 @@ class Blicki_Suggestion {
      * @param  int $id
      * @return int[]
      */
-	public static function get_suggestions_for_entry( $id ) {
+	public static function get_suggestions_for_entry( $id, $status = 'any' ) {
         return get_posts( array(
             'fields'         => 'ids',
 			'post_type'      => 'blicki-suggestion',
             'post_parent'    => $id,
             'posts_per_page' => -1,
-            'post_status'    => 'any',
+            'post_status'    => $status,
         ) );
     }
+
+	/**
+	 * Get a list of contributors to a wiki entry.
+	 * @param  int $entry_id
+	 * @return array
+	 */
+	public static function get_contributors_for_entry( $entry_id ) {
+		$contributors = array();
+		$suggestions  = $this->get_suggestions_for_entry( $entry_id );
+
+		foreach ( $suggestions as $suggestion ) {
+			if ( $suggestion->post_author ) {
+				if ( isset( $contributors[ $suggestion->post_author ] ) ) {
+					$contributors[ $suggestion->post_author ]->count ++;
+				} else {
+					$user = get_user_by( 'id', $suggestion->post_author );
+					$contributors[ $suggestion->post_author ] = (object) array(
+						'email' => $user->email,
+						'name'  => $user->display_name,
+						'count' => 1
+					);
+				}
+			} else {
+				$email = get_post_meta( $suggestion->ID, '_blicki_author_email', true );
+				$name  = get_post_meta( $suggestion->ID, '_blicki_author_name', true );
+				if ( isset( $contributors[ $email ] ) ) {
+					$contributors[ $email ]->count ++;
+				} else {
+					$contributors[ $suggestion->post_author ] = (object) array(
+						'email' => $email,
+						'name'  => $name,
+						'count' => 1
+					);
+				}
+			}
+		}
+		return $contributors;
+	}
 }
 new Blicki_Suggestion();
