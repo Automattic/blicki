@@ -39,8 +39,8 @@ jQuery(function( $ ) {
 			return;
 		}
 
-		post_div.prepend( '<div class="blicki__toc-container"><strong>' + blicki_js_params.toc + '</strong><ol class="blicki__toc"></ol></div>' );
-		var list = $( 'ol.blicky-entry-content-toc', post_div );
+		var toc_div = $( '<div class="blicki__toc-container"><strong>' + blicki_js_params.toc + '</strong></div>' );
+		var list = $( '<ol class="blicki__toc"></ol></div>' );
 		headings.forEach( function( elem ) {
 			var listItem = $('<li>').addClass('toc-level' + elem.level);
 			var link = $('<a>').attr('href', elem.target).text(elem.text);
@@ -48,5 +48,7 @@ jQuery(function( $ ) {
 			listItem.append(link);
 			list.append(listItem);
 		});
+		toc_div.append( list );
+		post_div.prepend( toc_div )
 	});
 });

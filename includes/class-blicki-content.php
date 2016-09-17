@@ -84,7 +84,7 @@ class Blicki_Content {
 					<?php echo $revisions; ?>
 					<a href="#" class="blicki-hide-revisions-link"><?php _e( 'Hide revisions', 'blicki' ); ?></a>
 				</div>
-				<div class='blicky-entry-content'>
+				<div class='blicky-entry-content' id='post<?php echo esc_attr( $post->ID ); ?>'>
 					<?php echo $content; ?>
 				</div>
 				<?php
