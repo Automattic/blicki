@@ -58,7 +58,7 @@ class Blicki {
      */
     public function includes() {
         include_once( BLICKI_DIR . 'includes/class-blicki-cpt.php' );
-        include_once( BLICKI_DIR . 'includes/class-blicki-revisions.php' );
+        include_once( BLICKI_DIR . 'includes/class-blicki-revision.php' );
         include_once( BLICKI_DIR . 'includes/class-blicki-diff-viewer.php' );
 		include_once( BLICKI_DIR . 'includes/class-blicki-edit-form.php' );
 		include_once( BLICKI_DIR . 'includes/class-blicki-notices.php' );
@@ -82,7 +82,7 @@ class Blicki {
 
 			// Add notices
 			Blicki_Notices::display();
-			
+
 			// construct the wrapped output here as normal
 			ob_start();
 
@@ -99,7 +99,7 @@ class Blicki {
 				$toc = "<ol class='blicki__toc'></ol>";
 
 				// add editor
-				$editor = $this->get_editor( $content, $post->ID );
+				$editor = Blicki_Edit_Form::get_edit_form( $content, $post->ID );
 
 				// grab revision history
 				$revisions = $this->get_revision_history( $post->ID );
@@ -125,30 +125,6 @@ class Blicki {
 		}
 
 		return $content;
-	}
-
-	/**
-	 * Produces the HTML for our frontend editor component.
-	 */
-	private function get_editor( $content, $id ) {
-		// use an output buffer here because of wp_editor
-		// and it lets us construct the additional fields normally
-		ob_start();
-		$settings = array( 'media_buttons' => false, 'quicktags' => false );
-		?>
-		<form class='blicki__edit' method='post'>
-			<?php wp_editor( $content, 'blicki-editor-' . $id, $settings ); ?>
-			<div class='blicki__edit-details'>
-				<label for='email<?php echo esc_attr( $id ); ?>'>Enter your email address:</label>
-				<input type='email' name='blicki-email-<?php echo esc_attr( $id ); ?>' placeholder='email@example.com' id='email<?php echo esc_attr( $id ); ?>' />
-				<button type='submit' class='blicki__edit-submit' name='blicki-edit-form'>Submit Changes</button>
-				<input type='hidden' name='blicki-edit-entry' value="<?php echo esc_attr( $id ); ?>" />
-				<a class='blicki__edit-cancel'>Cancel</a>
-			</div>
-		</form>
-		<?php
-		$editor = ob_get_clean();
-		return $editor;
 	}
 
 	/**

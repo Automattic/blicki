@@ -24,7 +24,7 @@ class Blicki_Notices {
     public static function display() {
         if ( ! empty( self::$notices ) ) {
             foreach ( self::$notices as $notice ) {
-                echo '<div class="blicki-notic blicki-notice--' . esc_attr( $notice->type ) . '">' . wpautop( esc_html( $notice->text ) ) . '</div>';
+                echo '<div class="blicki-notice blicki-notice--' . esc_attr( $notice->type ) . '">' . wpautop( esc_html( $notice->text ) ) . '</div>';
             }
         }
     }
