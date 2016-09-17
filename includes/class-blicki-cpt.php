@@ -13,6 +13,7 @@ class Blicki_CPT {
      */
     public function __construct() {
         add_action( 'init', array( $this, 'register_post_types' ) );
+		add_filter( 'wp_revisions_to_keep', array( $this, 'revisions_to_keep' ), 10, 2 );
     }
 
     /**
@@ -104,5 +105,14 @@ class Blicki_CPT {
             ) )
         );*/
     }
+
+	public function revisions_to_keep ( $num, $post ) {
+		if ( 'blicki' === $post->post_type ) {
+			// make sure we always keep all revisions for our post type
+			return -1;
+		}
+
+		return $num;
+	}
 }
 new Blicki_CPT();
