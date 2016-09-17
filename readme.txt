@@ -1,5 +1,5 @@
 === Blicki ===
-Contributors: benedictsinger, danhauk, lschuyler, mikejolley, therichmonderatlarge
+Contributors: benedictsinger, danhauk, graceofbase, lschuyler, mikejolley
 Tags: wiki
 Requires at least: 4.6.1
 Tested up to: 4.6.1
