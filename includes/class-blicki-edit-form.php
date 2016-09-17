@@ -43,7 +43,7 @@ class Blicki_Edit_Form {
 
 				<button type='submit' class='blicki__edit-submit' name='blicki-edit-form'><?php _e( 'Suggest Changes', 'blicki' ); ?></button>
 				<input type='hidden' name='blicki-edit-entry' value="<?php echo esc_attr( $id ); ?>" />
-				<a class='blicki__edit-cancel'>Cancel</a>
+				<a href="#" class='blicki__edit-cancel'>Cancel</a>
 			</div>
 		</form>
 		<?php
@@ -113,7 +113,7 @@ class Blicki_Edit_Form {
 
 			// Check content is not duplicated
 			if ( ! $this->is_content_unique( $entry_id, $content ) ) {
-				throw new Exception( __( 'This change has already been submitted and is pending approval.', 'blicki' ) );
+				throw new Exception( __( 'This change has already been submitted.', 'blicki' ) );
 			}
 
 			$suggestion_id = Blicki_Suggestion::create_suggestion( $entry_id, array(
