@@ -97,11 +97,20 @@ class Blicki_Diff_Viewer {
 	 */
 	public static function show_diffs( $source_id, $suggestion_id ) {
 		// get posts, call wp_text_diff
-		$source      = get_post( $source_id );
-		$suggestion  = get_post( $suggestion_id );
-		$diff_html   = wp_text_diff( $source->post_title . "\n" . $source->post_content, $suggestion->post_title . "\n" . $suggestion->post_content, array( 'title_left' => __( 'Original', 'blicki' ), 'title_right' => __( 'Suggested', 'blicki' ) ) );
-		$contributor = Blicki_Suggestion::get_contributor_for_post( $suggestion_id );
-		$nonce_name = 'moderate-post-' . $source_id . '-' . $suggestion_id;
+		$source          = get_post( $source_id );
+		$suggestion      = get_post( $suggestion_id );
+		$contributor     = Blicki_Suggestion::get_contributor_for_post( $suggestion_id );
+		$nonce_name      = 'moderate-post-' . $source_id . '-' . $suggestion_id;
+		$original_date   = date_i18n( get_option( 'date_format' ), strtotime( $source->post_date ) );
+		$suggestion_date = date_i18n( get_option( 'date_format' ), strtotime( $suggestion->post_date ) );
+		$diff_html       = wp_text_diff(
+			$source->post_title . "\n" . $source->post_content,
+			$suggestion->post_title . "\n" . $suggestion->post_content,
+			array(
+				'title_left'  => sprintf( __( 'Original, %s', 'blicki' ), $original_date ),
+				'title_right' => sprintf( __( 'Suggested, %s', 'blicki' ), $suggestion_date )
+			)
+		);
 		?>
 		<div class="wrap">
 			<h1><?php printf( __( 'Merging suggested changes from %s into &ldquo;%s&rdquo;', 'blicki' ), esc_html( $contributor->name ), esc_html( $source->post_title ) ); ?></h1>
