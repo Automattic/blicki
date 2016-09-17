@@ -83,9 +83,20 @@ class Blicki {
 			// add editor
 			$editor = $this->get_editor( $content, $post->ID );
 
-			// TODO redo this with an output buffer
-			$new_content = sprintf( "<div id='post-wrapper-%d' class='post-wrapper' style='border: 1px solid black;'><span>Content tab</span>%s%s</div><div><span>Editor tab</span>%s</div>", esc_attr( $post->ID), $toc, $content, $editor );
-			return $new_content;
+			// construct the wrapped output here as normal
+			ob_start();
+			?>
+			<div id='post-wrapper-<?= esc_attr( $post->ID ); ?>' class='post-wrapper' style='border: 1px solid black;'>
+				<span>Content tab</span>
+				<?= $toc; ?>
+				<?= $content; ?>
+			</div>
+			<div>
+				<span>Editor tab</span>
+				<?= $editor; ?>
+			</div>
+			<?php
+			return ob_get_clean();
 		}
 
 		return $content;
@@ -95,14 +106,23 @@ class Blicki {
 	 * Produces the HTML for our frontend editor component.
 	 */
 	private function get_editor( $content, $id ) {
+		// use an output buffer here because of wp_editor
+		// and it lets us construct the additional fields normally
 		ob_start();
 		$settings = array( 'media_buttons' => false, 'quicktags' => false );
-		wp_editor( $content, 'editor' . $id, $settings );
+		?>
+		<form class='blicki__edit'>
+			<?php wp_editor( $content, 'editor' . $id, $settings ); ?>
+			<div class='blicki__edit-details'>
+				<label for='email<?= esc_attr( $id ); ?>'>Enter your email address:</label>
+				<input type='email' name='email<?= esc_attr( $id ); ?>' placeholder='email@example.com' id='email<?= esc_attr( $id ); ?>' />
+				<button type='submit' class='blicki__edit-submit'>Submit Changes</button>
+				<a class='blicki__edit-cancel'>Cancel</a>
+			</div>
+		</form>
+		<?php
 		$editor = ob_get_clean();
-
-		// TODO redo this with an output buffer and proper escaping
-		$ret = sprintf( "<form class='blicki__edit'>%s<div class='blicki__edit-details'><label for='email%d'>Enter your email address:</label><input type='email' name='email%d' placeholder='email@example.com' id='email%d' /><button type='submit' class='blicki__edit-submit'>Submit Changes</button><a class='blicki__edit-cancel'>Cancel</a></form>", $editor, $id, $id, $id );
-		return $ret;
+		return $editor;
 	}
 }
 new Blicki();
