@@ -88,7 +88,6 @@ class Blicki {
 
 			if ( isset( $_GET['source'] ) && isset( $_GET['revision'] ) ) {
 				// showing the revision diff for this pair
-				// TODO either this needs our own styling or we need to figure out what the admin page uses and enqueue that
 				Blicki_Diff_Viewer::show_diffs( $_GET['source'], $_GET['revision'] );
 
 				// give a link back to the post
@@ -106,18 +105,18 @@ class Blicki {
 				$revisions = $this->get_revision_history( $post->ID );
 
 				?>
-				<div id='post-wrapper-<?= esc_attr( $post->ID ); ?>' class='post-wrapper' style='border: 1px solid black;'>
+				<div id='post-wrapper-<?= esc_attr( $post->ID ); ?>' class='post-wrapper'>
 					<span>Content tab</span>
-					<?= $toc; ?>
-					<?= $content; ?>
+					<?php echo $toc; ?>
+					<?php echo $content; ?>
 				</div>
 				<div>
 					<span>Editor tab</span>
-					<?= $editor; ?>
+					<?php echo $editor; ?>
 				</div>
-				<div style='border: 1px solid black'>
+				<div>
 					<span>Revision History tab</span>
-					<?= $revisions; ?>
+					<?php echo $revisions; ?>
 				</div>
 				<?php
 			}
