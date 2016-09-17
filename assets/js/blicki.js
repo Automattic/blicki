@@ -1,5 +1,5 @@
 jQuery(function( $ ) {
-	$( 'div.post-wrapper' ).each( function() {
+	$( '.blicky-entry-content' ).each( function() {
 		var post_div = $( this );
 		var headings = [];
 		var prefix = post_div.attr( 'id' )
@@ -27,7 +27,12 @@ jQuery(function( $ ) {
 			$(this).attr('id', prefix + index);
 		});
 
-		var list = $( 'ol.blicki__toc', post_div );
+		if ( ! headings ) {
+			return;
+		}
+
+		post_div.prepend( '<ol class="blicky-entry-content-toc"></ol>' );
+		var list = $( 'ol.blicky-entry-content-toc', post_div );
 		headings.forEach( function( elem ) {
 			var listItem = $('<li>').addClass('toc-level' + elem.level);
 			var link = $('<a>').attr('href', elem.target).text(elem.text);

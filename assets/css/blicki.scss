@@ -1,7 +1,11 @@
 // Blicki!
 @import "_colors.scss";
 
-.blicki__toc {
+.blicky-entry-editor, .blicky-entry-revisions {
+	display: none;
+}
+
+.blicky-entry-content-toc {
 	background: $gray-light;
 	float: right;
 	margin: 1em 0 2em 2em;
