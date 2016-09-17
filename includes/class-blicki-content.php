@@ -44,8 +44,23 @@ class Blicki_Content {
 			ob_start();
 
 			if ( isset( $_GET['source'] ) && isset( $_GET['revision'] ) ) {
-				// showing the revision diff for this pair
-				Blicki_Diff_Viewer::show_diffs( $_GET['source'], $_GET['revision'] );
+				$source_id = absint( $_GET['source'] );
+				$revision_id = absint( $_GET['revision'] );
+
+				// get posts, call wp_text_diff
+				if ( 0 == $source_id ) {
+					$source_text = '';
+				} else {
+					$source = get_post( $source_id );
+					$source_text = $source->post_title . "\n" . $source->post_content;
+				}
+
+				$revision = get_post( $revision_id );
+				$revision_text = $revision->post_title . "\n" . $revision->post_content;
+
+				$diff_html = wp_text_diff( $source_text, $revision_text, array( 'title' => 'Revision Changes', 'title_left' => 'Original', 'title_right' => 'Revised' ) );
+
+				echo $diff_html;
 
 				// give a link back to the post
 				echo '<a href=" ' . esc_url( get_permalink() ) . '">' . __( 'Return to entry', 'blicki' ) . '</a>';
@@ -82,7 +97,6 @@ class Blicki_Content {
 				</div>
 				<div class='blicky-history'>
 					<?php echo $revisions; ?>
-					<a href="#" class="blicki-hide-revisions-link"><?php _e( 'Hide revisions', 'blicki' ); ?></a>
 				</div>
 				<div class='blicky-entry-content' id='post<?php echo esc_attr( $post->ID ); ?>'>
 					<?php echo $content; ?>
@@ -100,15 +114,14 @@ class Blicki_Content {
 	 * Produces the HTML for the revision history
 	 */
 	private function get_revision_history( $id ) {
-		return "<p>TODO use real WP revisions here instead</p>";
 		ob_start();
-		$revisions = Blicki_Revision::get_revisions_for_entry( $id );
+		$revisions = wp_get_post_revisions( $id );
 
         if ( $revisions ) {
             echo '<ul class="blicki-revision-list">';
-			$prev_revision_id = $id;
-            foreach ( array_reverse( $revisions ) as $revision_id ) {
-                $revision = get_post( $revision_id );
+			$prev_revision_id = 0;
+            foreach ( array_reverse( $revisions ) as $revision ) {
+				$revision_id = $revision->ID;
                 $date     = date_i18n( get_option( 'date_format' ), strtotime( $revision->post_date ) );
 
                 if ( $revision->post_author ) {
