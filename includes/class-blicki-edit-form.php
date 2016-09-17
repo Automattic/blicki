@@ -26,12 +26,19 @@ class Blicki_Edit_Form {
 		?>
 		<form class='blicki__edit' method='post'>
 			<div class='blicki__edit-details'>
-
-				<?php wp_editor( $content, 'blicki-editor-' . $id, $settings ); ?>
+				<div class="blicki__edit-details-field">
+					<?php wp_editor( $content, 'blicki-editor-' . $id, $settings ); ?>
+				</div>
 
 				<?php if ( ! is_user_logged_in() ) : ?>
-					<label for='email<?php echo esc_attr( $id ); ?>'>Enter your email address:</label>
-					<input type='email' name='blicki-email-<?php echo esc_attr( $id ); ?>' placeholder='email@example.com' id='email<?php echo esc_attr( $id ); ?>' />
+					<div class="blicki__edit-details-field">
+						<label for='name<?php echo esc_attr( $id ); ?>'><?php _e( 'Enter your name:', 'blicki' ); ?></label>
+						<input type='text' name='blicki-name-<?php echo esc_attr( $id ); ?>' placeholder='Your Name' id='name<?php echo esc_attr( $id ); ?>' />
+					</div>
+					<div class="blicki__edit-details-field">
+						<label for='email<?php echo esc_attr( $id ); ?>'><?php _e( 'Enter your email address:', 'blicki' ); ?></label>
+						<input type='email' name='blicki-email-<?php echo esc_attr( $id ); ?>' placeholder='email@example.com' id='email<?php echo esc_attr( $id ); ?>' />
+					</div>
 				<?php endif; ?>
 
 				<button type='submit' class='blicki__edit-submit' name='blicki-edit-form'>Submit Changes</button>
@@ -84,13 +91,20 @@ class Blicki_Edit_Form {
 
 			if ( is_user_logged_in() ) {
 				$email       = '';
+				$name        = '';
 				$post_author = get_current_user_id();
 			} else {
 				$email       = sanitize_text_field( $_POST[ 'blicki-email-' . $entry_id ] );
+				$name        = sanitize_text_field( $_POST[ 'blicki-name-' . $entry_id ] );
 				$post_author = 0;
 			}
 
             $content = implode( "\n", array_map( 'sanitize_text_field', explode( "\n", $_POST[  'blicki-editor-' . $entry_id ] ) ) );
+
+			// Check name is valid.
+            if ( ! $post_author && empty( $name ) ) {
+                throw new Exception( __( 'Please enter your name.', 'blicki' ) );
+            }
 
 			// Check email is valid.
             if ( ! $post_author && ! is_email( $email ) ) {
@@ -106,7 +120,8 @@ class Blicki_Edit_Form {
                 'post_title'   => $entry->post_title,
                 'post_content' => $content,
                 'post_author'  => $post_author,
-				'author_email' => $email,
+				'author_email'             => $email,
+				'author_name'              => $name,
             ) );
 
             Blicki_Notices::add( __( 'Thanks for submitting your suggestion. A moderator will approve your changes as soon as possible.', 'blicki' ), 'success' );
