@@ -69,16 +69,10 @@ class Blicki_Diff_Viewer {
 					wp_die( "Failed to update post", "Update Failed" );
 				}
 
-				add_action( '_wp_put_post_revision', array( $this, 'store_extra_revision_meta' ) );
-
-				$this->approving = $suggestion;
-
 				wp_update_post( array(
 					'ID'          => $suggestion_id,
 					'post_status' => 'approved'
 				) );
-
-				remove_action( '_wp_put_post_revision', array( $this, 'store_extra_revision_meta' ) );
 
 				echo "<h2>" . __( 'Suggestion Approved', 'blicki' ) . "</h2>";
 			} else if ( 'reject' === $_REQUEST['action'] ) {

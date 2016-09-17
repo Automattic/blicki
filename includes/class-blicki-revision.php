@@ -24,10 +24,38 @@ class Blicki_Suggestion {
      * Construct.
      */
     public function __construct() {
+		add_action( 'save_post', array( $this, 'maybe_approve_suggestion' ) );
         add_action( 'post_submitbox_start', array( $this, 'pending_suggestion_button' ) );
         add_filter( 'wp_insert_post_data' , array( $this, 'maybe_create_suggestion' ), 20, 2 );
         add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
     }
+
+	/**
+	 * Approve a suggestion if the admin manually merged.
+	 */
+	public function maybe_approve_suggestion() {
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+            return false;
+        }
+        if ( ! $post = get_post( $post_id ) ) {
+            return false;
+        }
+        if ( 'blicki' !== $post->post_type ) {
+            return false;
+        }
+        if ( 'publish' !== $post->post_status ) {
+            return false;
+        }
+        if ( empty( $_POST['blicki-merge-from'] ) ) {
+            return false;
+        }
+		$merging_id = absint( $_POST['blicki-merge-from'] );
+
+		wp_update_post( array(
+			'ID'          => $merging_id,
+			'post_status' => 'approved'
+		) );
+	}
 
     /**
      * True if we're submitting changes, not an update.
