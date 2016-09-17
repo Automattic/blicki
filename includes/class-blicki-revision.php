@@ -277,8 +277,7 @@ class Blicki_Suggestion {
 
 		// Contributors from suggstions
 		foreach ( self::get_suggestions_for_entry( $entry_id, 'approved' ) as $suggestion_id ) {
-			$suggestion  = get_post( $suggestion_id );
-			$contributor = self::get_contributor_for_post( $last );
+			$contributor = self::get_contributor_for_post( $suggestion_id );
 
 			if ( isset( $contributors[ $contributor->id ] ) ) {
 				$contributors[ $contributor->id ]->count ++;
