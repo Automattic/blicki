@@ -1,10 +1,16 @@
 jQuery(function( $ ) {
 
-	$('.blicki__actions-history').on( 'click', function() {
+	$('.blicki__actions-history').on( 'click', function( e ) {
+		e.preventDefault();
 		$( '.blicky-history' ).slideToggle();
 	} );
-	$('.blicki__actions-edit').on( 'click', function() {
+	$('.blicki__actions-edit').on( 'click', function( e ) {
+		e.preventDefault();
 		$( '.blicky-edit' ).slideToggle();
+	} );
+	$('.blicki__edit-cancel').on( 'click', function( e ) {
+		e.preventDefault();
+		$( '.blicky-edit' ).slideUp();
 	} );
 
 	$( '.blicky-entry-content' ).each( function() {
