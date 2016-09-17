@@ -148,6 +148,7 @@ class Blicki_Diff_Viewer {
 						foreach ( $operation->final as $line ) {
 							$merged_text .= $line . "\n";
 						}
+						$merged_text .= "\nEND\n\n";
 					}
 				}
 				return $merged_text;
