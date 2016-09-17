@@ -1,0 +1,117 @@
+# Copyright (C) 2016 Automattic
+# This file is distributed under the GPL2+.
+msgid ""
+msgstr ""
+"Project-Id-Version: Blicki ¯\\_(ツ)_/¯\n"
+"Report-Msgid-Bugs-To: https://github.com/Automattic/blicki/issues\n"
+"POT-Creation-Date: 2016-09-17 00:02:42+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2016-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"X-Generator: grunt-wp-i18n 0.5.4\n"
+
+#: includes/class-blicki-cpt.php:25
+msgid "Entry"
+msgstr ""
+
+#: includes/class-blicki-cpt.php:26
+msgid "Entries"
+msgstr ""
+
+#: includes/class-blicki-cpt.php:32
+msgid "Wiki"
+msgstr ""
+
+#: includes/class-blicki-cpt.php:33
+msgid "All %s"
+msgstr ""
+
+#: includes/class-blicki-cpt.php:34
+msgid "Add New"
+msgstr ""
+
+#: includes/class-blicki-cpt.php:35
+msgid "Add %s"
+msgstr ""
+
+#: includes/class-blicki-cpt.php:36
+msgid "Edit"
+msgstr ""
+
+#: includes/class-blicki-cpt.php:37
+msgid "Edit %s"
+msgstr ""
+
+#: includes/class-blicki-cpt.php:38
+msgid "New %s"
+msgstr ""
+
+#: includes/class-blicki-cpt.php:39 includes/class-blicki-cpt.php:40
+msgid "View %s"
+msgstr ""
+
+#: includes/class-blicki-cpt.php:41
+msgid "Search %s"
+msgstr ""
+
+#: includes/class-blicki-cpt.php:42
+msgid "No %s found"
+msgstr ""
+
+#: includes/class-blicki-cpt.php:43
+msgid "No %s found in trash"
+msgstr ""
+
+#: includes/class-blicki-cpt.php:44
+msgid "Parent %s"
+msgstr ""
+
+#: includes/class-blicki-cpt.php:46
+msgid "This is where you can create and manage %s."
+msgstr ""
+
+#: includes/class-blicki-revisions.php:66
+msgid "Suggest changes"
+msgstr ""
+
+#: includes/class-blicki-revisions.php:127
+msgid "Blicki Revisions"
+msgstr ""
+
+#: includes/class-blicki-revisions.php:152
+msgid "Show diff"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "Blicki"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "http://dev.wp-plugins.org/browser/blicki/"
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Automattic"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "https://automattic.com/"
+msgstr ""
+
+#: includes/class-blicki-cpt.php:54
+msgctxt "Blicki permalink - resave permalinks after changing this"
+msgid "wiki"
+msgstr ""
+
+#: includes/class-blicki-cpt.php:61
+msgctxt "Blicki post type archive slug - resave permalinks after changing this"
+msgid "wiki"
+msgstr ""
+
+#: includes/class-blicki-revisions.php:152
+msgctxt "Revision by user on date"
+msgid "Revision by %s on %s"
+msgstr ""

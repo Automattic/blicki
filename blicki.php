@@ -4,7 +4,7 @@
  * Plugin URI: http://dev.wp-plugins.org/browser/blicki/
  * Author: Automattic
  * Version: ¯\_(ツ)_/¯
- * Author URI: http://automattic.com/
+ * Author URI: https://automattic.com/
  * Requires at least: 4.6
  * Tested up to: 4.6
  * Text Domain: blicki
@@ -66,7 +66,7 @@ class Blicki {
      * Scripts.
      */
     public function scripts() {
-		wp_enqueue_script( 'blicki_js', plugins_url( 'blicki.js', __FILE__ ), array( 'jquery' ), '1.0.0', true );
+		wp_enqueue_script( 'blicki_js', plugins_url( 'assets/js/blicki.js', __FILE__ ), array( 'jquery' ), '1.0.0', true );
 		wp_enqueue_style( 'blicki_css', plugins_url( 'css/blicki.css', __FILE__ ), false );
     }
 
