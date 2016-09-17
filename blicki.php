@@ -154,8 +154,8 @@ class Blicki {
 
         if ( $revisions ) {
             echo '<ul class="blicki-revision-list">';
-			$prev_revision_id = null;
-            foreach ( $revisions as $revision_id ) {
+			$prev_revision_id = $id;
+            foreach ( array_reverse( $revisions ) as $revision_id ) {
                 $revision = get_post( $revision_id );
                 $date     = date_i18n( get_option( 'date_format' ), strtotime( $revision->post_date ) );
 
@@ -166,13 +166,9 @@ class Blicki {
                     $username = '';
                 }
 
-				if ( ! empty( $prev_revision_id ) ) {
-					$revisions_url = add_query_arg( array( 'source' => $prev_revision_id, 'revision' => $revision_id ), get_permalink( $id ) );
+				$revisions_url = add_query_arg( array( 'source' => $prev_revision_id, 'revision' => $revision_id ), get_permalink( $id ) );
 
-					echo '<li class="blicki-revision-list-item">' . sprintf( esc_html_x( 'Revision by %s on %s', 'Revision by user on date', 'blicki' ), '<strong>' . $username . '</strong>', $date ) . '<br/><a href="' . esc_url( $revisions_url ) . '">' . esc_html__( 'Show diff', 'blicki' ) . '</a></li>';
-				} else {
-					echo '<li class="blicki-revision-list-item">' . sprintf( esc_html_x( 'Revision by %s on %s', 'Revision by user on date', 'blicki' ), '<strong>' . $username . '</strong>', $date ) . '</li>';
-				}
+				echo '<li class="blicki-revision-list-item">' . sprintf( esc_html_x( 'Revision by %s on %s', 'Revision by user on date', 'blicki' ), '<strong>' . $username . '</strong>', $date ) . '<br/><a href="' . esc_url( $revisions_url ) . '">' . esc_html__( 'Show diff', 'blicki' ) . '</a></li>';
 
 				$prev_revision_id = $revision_id;
             }
