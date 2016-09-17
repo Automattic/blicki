@@ -64,6 +64,9 @@ class Blicki_Suggestion {
         }
 
         echo '<div style="margin-bottom: 12px;"><input style="display:block; width:100%;" name="blicki-suggest-changes" type="submit" class="button button-large" value="' . esc_html__( 'Suggest changes', 'blicki' ) . '"></div>';
+		if ( isset ( $_GET['merge_from'] ) ) {
+			echo "<input type='hidden' name='blicki-merge-from' value='" . esc_attr( $_GET['merge_from'] ) . "'/>";
+		}
     }
 
     /**
