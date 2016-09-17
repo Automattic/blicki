@@ -1,4 +1,12 @@
 jQuery(function( $ ) {
+
+	$('.blicki__actions-history').on( 'click', function() {
+		$( '.blicky-history' ).slideToggle();
+	} );
+	$('.blicki__actions-edit').on( 'click', function() {
+		$( '.blicky-edit' ).slideToggle();
+	} );
+
 	$( '.blicky-entry-content' ).each( function() {
 		var post_div = $( this );
 		var headings = [];
@@ -27,11 +35,11 @@ jQuery(function( $ ) {
 			$(this).attr('id', prefix + index);
 		});
 
-		if ( ! headings ) {
+		if ( ! headings.length ) {
 			return;
 		}
 
-		post_div.prepend( '<ol class="blicky-entry-content-toc"></ol>' );
+		post_div.prepend( '<div class="blicki__toc-container"><strong>' + blicki_js_params.toc + '</strong><ol class="blicki__toc"></ol></div>' );
 		var list = $( 'ol.blicky-entry-content-toc', post_div );
 		headings.forEach( function( elem ) {
 			var listItem = $('<li>').addClass('toc-level' + elem.level);
