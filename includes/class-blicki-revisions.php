@@ -133,6 +133,10 @@ class Blicki_Revision {
     public function blick_revisions_content() {
         global $post;
 
+		if ( ! class_exists( 'WP_Text_Diff_Renderer_Table', false ) ) {
+			require( ABSPATH . WPINC . '/wp-diff.php' );
+		}
+
         $post_id   = $post->ID;
         $revisions = $this->get_revisions_for_entry( $post_id );
 
@@ -149,7 +153,15 @@ class Blicki_Revision {
                     $username = '';
                 }
 
-                echo '<li class="blicki-revision-list-item">' . sprintf( esc_html_x( 'Revision by %s on %s', 'Revision by user on date', 'blicki' ), '<strong>' . $username . '</strong>', $date ) . '<br/><a href="' . esc_url( $this->get_diff_viewer_url( $post_id, $revision_id ) ) . '">' . esc_html__( 'Show diff', 'blicki' ) . '</a></li>';
+				$text_diff = new Text_Diff( explode( "\n", $post->post_content ), explode( "\n", $revision->post_content ) );
+
+                echo
+					'<li class="blicki-revision-list-item">',
+					sprintf( esc_html_x( 'Revision by %s on %s', 'Revision by user on date', 'blicki' ), '<strong>' . $username . '</strong>', $date ),
+					'<br/><a href="' . esc_url( $this->get_diff_viewer_url( $post_id, $revision_id ) ) . '" title="' . esc_html__( 'Show diff', 'blicki' ) . '">',
+					sprintf( esc_html_x( '%d changes', 'X changes', 'blicki' ), sizeof( $text_diff->_edits ) ),
+					'</a>',
+					'</li>';
             }
             echo '</ul>';
         }
