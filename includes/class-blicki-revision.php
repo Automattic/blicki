@@ -112,6 +112,7 @@ class Blicki_Suggestion {
         ) );
 		update_post_meta( $data, '_blicki_author_email', isset( $data['author_email'] ) ? $data['author_email'] : '' );
 		update_post_meta( $data, '_blicki_author_name', isset( $data['author_name'] ) ? $data['author_name'] : '' );
+		return $post_id;
     }
 
     /**
