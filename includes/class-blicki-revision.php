@@ -101,14 +101,17 @@ class Blicki_Suggestion {
      * @param array $data
      */
     public static function create_suggestion( $post_id, $data ) {
-        return (int) wp_insert_post( array(
+        $post_id = (int) wp_insert_post( array(
             'post_type'    => 'blicki-suggestion',
+			'post_name'    => md5( $data['post_content'] ),
             'post_title'   => $data['post_title'],
             'post_content' => $data['post_content'],
             'post_parent'  => $post_id,
             'post_status'  => 'pending',
             'post_author'  => get_current_user_id(),
         ) );
+		update_post_meta( $data, '_blicki_author_email', isset( $data['author_email'] ) ? $data['author_email'] : '' );
+		update_post_meta( $data, '_blicki_author_name', isset( $data['author_name'] ) ? $data['author_name'] : '' );
     }
 
     /**
