@@ -12,6 +12,18 @@ jQuery(function( $ ) {
 		e.preventDefault();
 		$( '.blicky-edit' ).slideUp();
 	} );
+	$( document ).on( 'click', '.blicki__toc-toggle', function( e ) {
+		e.preventDefault();
+		var toggle = $(this),
+				tocList = toggle.siblings( '.blicki__toc' );
+		if ( tocList.is( ':visible' ) ) {
+			toggle.text( 'Show' );
+			tocList.slideUp( 150 );
+		} else {
+			toggle.text( 'Hide' );
+			tocList.slideDown( 150 );
+		}
+	} );
 
 	$( '.blicky-entry-content' ).each( function() {
 		var post_div = $( this );
@@ -46,6 +58,7 @@ jQuery(function( $ ) {
 		}
 
 		var toc_div = $( '<div class="blicki__toc-container"><strong>' + blicki_js_params.toc + '</strong></div>' );
+		var tocToggle = $( '<a href="javascript:;" class="blicki__toc-toggle">Hide</a>' );
 		var list = $( '<ol class="blicki__toc"></ol></div>' );
 		headings.forEach( function( elem ) {
 			var listItem = $('<li>').addClass('toc-level' + elem.level);
@@ -54,7 +67,7 @@ jQuery(function( $ ) {
 			listItem.append(link);
 			list.append(listItem);
 		});
-		toc_div.append( list );
+		toc_div.append( tocToggle, list );
 		post_div.prepend( toc_div )
 	});
 });

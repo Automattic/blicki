@@ -1,48 +1,10 @@
 // Blicki!
 @import "_colors.scss";
 @import "_header.scss";
+@import "_toc.scss";
 
 .blicky-edit, .blicky-history {
 	display: none;
-}
-
-.blicki__toc-container {
-	background: rgba( #000, 0.05 );
-	float: right;
-	margin: 1em 0 2em 2em;
-	padding: 1em;
-	width: 250px;
-	max-width: 100%;
-
-	ol {
-		margin: 1em 0 0;
-	}
-
-	li {
-		font-size: 0.8em;
-		list-style: none;
-		padding: 5px 0;
-
-		&.toc-level2 {
-			padding-left: 5px;
-		}
-
-		&.toc-level3 {
-			padding-left: 10px;
-		}
-
-		&.toc-level4 {
-			padding-left: 15px;
-		}
-
-		&.toc-level5 {
-			padding-left: 20px;
-		}
-
-		&.toc-level6 {
-			padding-left: 25px;
-		}
-	}
 }
 
 .blicki__edit {
