@@ -162,7 +162,7 @@ class Blicki_Revision {
      * @return string
      */
     public static function get_diff_viewer_url( $source_id, $revision_id ) {
-        return add_query_arg( array( 'page' => 'blicki-show-diff', 'revision' => absint( $revision_id ), 'source' => absint( $source_id ) ), admin_url( 'edit.php' ) );
+        return add_query_arg( array( 'page' => 'blicki-show-diff', 'revision' => absint( $revision_id ), 'source' => absint( $source_id ) ), admin_url( 'edit.php?post_type=blicki' ) );
     }
 
     /**
