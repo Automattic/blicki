@@ -63,7 +63,12 @@ class Blicki_Diff_Viewer {
 					}
 					wp_die( "Failed to update post", "Update Failed" );
 				}
-				wp_delete_post( $suggestion_id );
+				
+				wp_update_post( array(
+					'ID'          => $suggestion_id,
+					'post_status' => 'approved'
+				) );
+
 				echo "<h2>Suggestion Approved</h2>";
 			} else if ( 'reject' == $_POST['action'] ) {
 				wp_delete_post( $suggestion_id );
