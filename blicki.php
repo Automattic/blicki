@@ -96,7 +96,7 @@ class Blicki {
 				<?php
 			} else {
 				// showing the post with editor, etc
-				$toc = "<ol class='blicki__toc'></ol>";
+				$toc = "<div class='blicki__toc-container'><strong>Table of Contents</strong><ol class='blicki__toc'></ol></div>";
 
 				// add editor
 				$editor = Blicki_Edit_Form::get_edit_form( $content, $post->ID );
