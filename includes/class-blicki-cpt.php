@@ -57,7 +57,7 @@ class Blicki_CPT {
                     'pages'      => false,
                 ),
                 'query_var'         => true,
-                'supports'          => array( 'title', 'editor' ),
+                'supports'          => array( 'title', 'editor', 'revisions' ),
                 'has_archive'       => _x( 'wiki', 'Blicki post type archive slug - resave permalinks after changing this', 'blicki' ),
                 'show_in_nav_menus' => false,
                 'menu_icon'         => 'dashicons-media-text',
