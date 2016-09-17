@@ -13,6 +13,7 @@ class Blicki_Diff_Viewer {
      */
     public function __construct() {
         add_action( 'admin_menu', array( $this, 'add_menu' ) );
+		add_filter( 'content_edit_pre', array( $this, 'maybe_merge_content' ), 10, 2 );
     }
 
 
@@ -81,16 +82,20 @@ class Blicki_Diff_Viewer {
 
 			// TODO approve/reject buttons need some styling perhaps?
 			?>
-			<form method='POST'>
-				<?php wp_nonce_field( $nonce_name ); ?>
-				<input type='hidden' name='action' value='reject'>
-				<button type='submit'><?php _e( 'Reject Suggestion', 'blicki' ); ?></button>
-			</form>
-			<form method='POST'>
-				<?php wp_nonce_field( $nonce_name ); ?>
-				<input type='hidden' name='action' value='approve'>
-				<button type='submit'><?php _e( 'Approve Suggestion', 'blicki' ); ?></button>
-			</form>
+			<p><?php _e( 'Select one of the following actions:', 'blicki' ); ?></p>
+			<ul>
+				<form method='POST'>
+					<?php wp_nonce_field( $nonce_name ); ?>
+					<input type='hidden' name='action' value='reject'>
+					<li><button type='submit'><?php _e( 'Reject Suggestion', 'blicki' ); ?></button></li>
+				</form>
+				<form method='POST'>
+					<?php wp_nonce_field( $nonce_name ); ?>
+					<input type='hidden' name='action' value='approve'>
+					<li><button type='submit'><?php _e( 'Approve Suggestion', 'blicki' ); ?></button></li>
+				</form>
+				<li><a href='<?php echo add_query_arg( array( 'post' => $source_id, 'action' => 'edit', 'merge_from' => $suggestion_id ), 'post.php' ); ?>'><?php _e( 'Edit merged version', 'blicki' ); ?></a></li>
+			</ul>
 			<?php
 		}
 	}
@@ -103,6 +108,43 @@ class Blicki_Diff_Viewer {
 		$diff_html = wp_text_diff( $source->post_title . "\n" . $source->post_content, $suggestion->post_title . "\n" . $suggestion->post_content, array( 'title' => __( 'Suggestion differences', 'blicki' ), 'title_left' => __( 'Original', 'blicki' ), 'title_right' => __( 'Suggested', 'blicki' ) ) );
 
 		echo $diff_html;
+	}
+
+	public function maybe_merge_content( $content, $post_id ) {
+		if ( isset( $_GET['merge_from'] ) && 0 !== absint( $_GET['merge_from'] ) ) {
+			$post = get_post( $post_id );
+			$suggestion = get_post( absint( $_GET['merge_from'] ) );
+			if ( ! empty( $post) && 'blicki' === $post->post_type
+				&& ! empty( $suggestion ) && 'blicki-suggestion' === $suggestion->post_type ) {
+				if ( ! class_exists( 'WP_Text_Diff_Renderer_Table', false ) ) {
+					require( ABSPATH . WPINC . '/wp-diff.php' );
+				}
+
+				$text_diff = new Text_Diff( explode( "\n", $post->post_content ), explode( "\n", $suggestion->post_content ) );
+				$merged_text = '';
+				foreach ( $text_diff->_edits as $operation ) {
+					if ( $operation instanceof Text_Diff_Op_copy ) {
+						// copy just means use the final (or original, they're the same by definition )
+						foreach ( $operation->final as $line ) {
+							$merged_text .= $line . "\n";
+						}
+					} else {
+						// all other operations have some difference between orig and final (might be false ie empty)
+						$merged_text .= "ORIGINAL:\n\n";
+						foreach ( $operation->orig as $line ) {
+							$merged_text .= $line . "\n";
+						}
+						$merged_text .= "\nSUGGESTED:\n\n";
+						foreach ( $operation->final as $line ) {
+							$merged_text .= $line . "\n";
+						}
+					}
+				}
+				return $merged_text;
+			}
+		}
+
+		return $content;
 	}
 }
 new Blicki_Diff_Viewer();
