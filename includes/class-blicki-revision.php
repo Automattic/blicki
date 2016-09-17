@@ -273,7 +273,7 @@ class Blicki_Suggestion {
 		// Original author
 		$contributor = self::get_contributor_for_post( $entry_id );
 		$contributors[ $contributor->id ] = $contributor;
-		$contributors[ $contributor->id ]->count = 1;
+		$contributors[ $contributor->id ]->count = sizeof( wp_get_post_revisions( $entry_id ) );
 
 		// Contributors from suggstions
 		foreach ( self::get_suggestions_for_entry( $entry_id, 'approved' ) as $suggestion_id ) {
