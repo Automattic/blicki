@@ -128,7 +128,7 @@ class Blicki_Suggestion {
      * Add meta boxes.
      */
     public function add_meta_boxes() {
-        add_meta_box( 'blick-suggestions', __( 'Blicki Suggestions', 'blicki' ), array( $this, 'blick_suggestions_content' ), 'blicki', 'side', 'high' );
+        add_meta_box( 'blicki-suggestions', __( 'Blicki Suggestions', 'blicki' ), array( $this, 'blick_suggestions_content' ), 'blicki', 'side', 'high' );
     }
 
     /**
@@ -168,7 +168,9 @@ class Blicki_Suggestion {
 					'</li>';
             }
             echo '</ul>';
-        }
+        } else {
+			echo '<p>' . __( 'None yet! (•_•) ( •_•)>⌐■-■ (⌐■_■)', 'blicki' ) . '</p>';
+		}
     }
 
     /**
