@@ -27,12 +27,13 @@ jQuery(function( $ ) {
 			$(this).attr('id', prefix + index);
 		});
 
-		var list = $( 'div.toc', post_div );
+		var list = $( 'ol.blicki__toc', post_div );
 		headings.forEach( function( elem ) {
-			var link = $('<a>').attr('href', elem.target);
-			// TODO this will need something more semantic for the nesting
-			link.append($('<p>').text(Array(elem.level + 1).join('x ') + elem.text))
-			list.append(link);
+			var listItem = $('<li>').addClass('toc-level' + elem.level);
+			var link = $('<a>').attr('href', elem.target).text(elem.text);
+
+			listItem.append(link);
+			list.append(listItem);
 		});
 	});
 });
