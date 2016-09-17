@@ -4,7 +4,7 @@ jQuery(function( $ ) {
 		e.preventDefault();
 		$( '.blicky-history' ).slideToggle();
 	} );
-	$('.blicki__actions-edit').on( 'click', function( e ) {
+	$('.blicki__actions-edit, .blicki__edit-cancel').on( 'click', function( e ) {
 		e.preventDefault();
 		$( '.blicky-edit' ).slideToggle();
 	} );
