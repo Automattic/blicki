@@ -167,7 +167,7 @@ class Blicki_Content {
 
 				$revisions_url = add_query_arg( array( 'source' => $prev_revision_id, 'revision' => $revision_id ), get_permalink( $id ) );
 
-				echo '<li class="blicki-revision-list-item">' . sprintf( esc_html_x( 'Revision by %s on %s', 'Revision by user on date', 'blicki' ), '<strong>' . $username . '</strong>', $date ) . '<br/><a href="' . esc_url( $revisions_url ) . '">' . esc_html__( 'Show diff', 'blicki' ) . '</a></li>';
+				echo '<li class="blicki-revision-list-item">' . sprintf( esc_html_x( 'Updated by %s on %s', 'Revision by user on date', 'blicki' ), '<strong>' . esc_html( $username ) . '</strong>', esc_html( $date ) ) . '<br/><a href="' . esc_url( $revisions_url ) . '">' . esc_html__( 'Show diff', 'blicki' ) . '</a></li>';
 
 				$prev_revision_id = $revision_id;
             }

@@ -16,7 +16,9 @@ class Blicki_Diff_Viewer {
 		add_filter( 'content_edit_pre', array( $this, 'maybe_merge_content' ), 10, 2 );
     }
 
-
+	/**
+	 * Add menu item for the view then remove it so it is hidden.
+	 */
 	public function add_menu() {
 		add_submenu_page(
 			'edit.php?post_type=blicki',
@@ -26,10 +28,12 @@ class Blicki_Diff_Viewer {
 			'blicki-show-diff',
 			array( $this, 'admin_suggestion_viewer' )
 		);
-
 		remove_submenu_page( 'edit.php?post_type=blicki', 'blicki-show-diff' );
 	}
 
+	/**
+	 * Diff viewer callback.
+	 */
 	public function admin_suggestion_viewer() {
 		if ( ! isset( $_GET['source'] ) || ! isset( $_GET['suggestion'] ) ) {
 			wp_die( "Source and suggestion are required", "Incorrect Usage" );
@@ -64,11 +68,17 @@ class Blicki_Diff_Viewer {
 					}
 					wp_die( "Failed to update post", "Update Failed" );
 				}
-				
+
+				add_action( '_wp_put_post_revision', array( $this, 'store_extra_revision_meta' ) );
+
+				$this->approving = $suggestion;
+
 				wp_update_post( array(
 					'ID'          => $suggestion_id,
 					'post_status' => 'approved'
 				) );
+
+				remove_action( '_wp_put_post_revision', array( $this, 'store_extra_revision_meta' ) );
 
 				echo "<h2>" . __( 'Suggestion Approved', 'blicki' ) . "</h2>";
 			} else if ( 'reject' == $_POST['action'] ) {
@@ -100,6 +110,9 @@ class Blicki_Diff_Viewer {
 		}
 	}
 
+	/**
+	 * Show the diff viewer.
+	 */
 	public static function show_diffs( $source_id, $suggestion_id ) {
 		// get posts, call wp_text_diff
 		$source = get_post( $source_id );
