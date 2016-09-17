@@ -141,12 +141,16 @@ class Blicki_Diff_Viewer {
 					} else {
 						// all other operations have some difference between orig and final (might be false ie empty)
 						$merged_text .= "ORIGINAL:\n\n";
-						foreach ( $operation->orig as $line ) {
-							$merged_text .= $line . "\n";
+						if ( ! empty( $operation->orig ) ) {
+							foreach ( $operation->orig as $line ) {
+								$merged_text .= $line . "\n";
+							}
 						}
 						$merged_text .= "\nSUGGESTED:\n\n";
-						foreach ( $operation->final as $line ) {
-							$merged_text .= $line . "\n";
+						if ( ! empty( $operation->final ) ) {
+							foreach ( $operation->final as $line ) {
+								$merged_text .= $line . "\n";
+							}
 						}
 						$merged_text .= "\nEND\n\n";
 					}
