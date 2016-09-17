@@ -2,11 +2,13 @@ jQuery(function( $ ) {
 
 	$('.blicki__actions-history').on( 'click', function( e ) {
 		e.preventDefault();
-		$( '.blicky-history' ).slideToggle();
+		$( '.blicky-edit' ).hide();
+		$( '.blicky-history' ).slideToggle( 150 );
 	} );
 	$('.blicki__actions-edit, .blicki__edit-cancel').on( 'click', function( e ) {
 		e.preventDefault();
-		$( '.blicky-edit' ).slideToggle();
+		$( '.blicky-history' ).hide();
+		$( '.blicky-edit' ).slideToggle( 150 );
 	} );
 	$('.blicki__edit-cancel').on( 'click', function( e ) {
 		e.preventDefault();
