@@ -3,7 +3,7 @@ jQuery(function( $ ) {
 	$('.blicki__actions-history').on( 'click', function() {
 		$( '.blicky-history' ).slideToggle();
 	} );
-	$('.blicki__actions-edit').on( 'click', function() {
+	$('.blicki__actions-edit, .blicki__edit-cancel').on( 'click', function() {
 		$( '.blicky-edit' ).slideToggle();
 	} );
 
