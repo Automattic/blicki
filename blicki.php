@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Main Bliki class.
+ * Main Blicki class.
  */
 class Blicki {
 

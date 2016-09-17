@@ -128,7 +128,7 @@ class Blicki_Suggestion {
      * Add meta boxes.
      */
     public function add_meta_boxes() {
-        add_meta_box( 'blick-suggestions', __( 'Blicki Suggestions', 'blicki' ), array( $this, 'blick_suggestions_content' ), 'blicki', 'side', 'high' );
+        add_meta_box( 'blicki-suggestions', __( 'Blicki Suggestions', 'blicki' ), array( $this, 'blick_suggestions_content' ), 'blicki', 'side', 'high' );
     }
 
     /**
@@ -168,7 +168,9 @@ class Blicki_Suggestion {
 					'</li>';
             }
             echo '</ul>';
-        }
+        } else {
+			echo '<p>' . __( 'None yet! (•_•) ( •_•)>⌐■-■ (⌐■_■)', 'blicki' ) . '</p>';
+		}
     }
 
     /**
@@ -197,6 +199,60 @@ class Blicki_Suggestion {
     }
 
 	/**
+	 * Get contributor data.
+	 * @param  int $suggestion_id
+	 * @return object
+	 */
+	public static function get_contributor_for_post( $suggestion_id ) {
+		$suggestion = get_post( $suggestion_id );
+
+		if ( $suggestion->post_author ) {
+			$user        = get_user_by( 'id', $suggestion->post_author );
+			$contributor = (object) array(
+				'id'    => $user->ID,
+				'email' => $user->user_email,
+				'name'  => $user->display_name,
+			);
+		} else {
+			$email       = get_post_meta( $suggestion_id, '_blicki_author_email', true );
+			$name        = get_post_meta( $suggestion_id, '_blicki_author_name', true );
+			$contributor = (object) array(
+				'id'    => $email,
+				'email' => $email,
+				'name'  => $name,
+			);
+		}
+		return $contributor;
+	}
+
+	/**
+     * Get IDs of suggestions for an entry.
+     * @param  int $id
+     * @return int[]
+     */
+	public static function get_last_contributor_for_entry( $id ) {
+        $last = get_posts( array(
+            'fields'         => 'ids',
+			'post_type'      => 'blicki-suggestion',
+            'post_parent'    => $id,
+            'posts_per_page' => 1,
+            'post_status'    => 'approved',
+        ) );
+		if ( $last ) {
+			$contributor = self::get_contributor_for_post( $last );
+		} else {
+			$entry = get_post( $id );
+			$user  = get_user_by( 'id', $entry->post_author );
+			$contributor = (object) array(
+				'id'    => $user->ID,
+				'email' => $user->user_email,
+				'name'  => $user->display_name,
+			);
+		}
+		return $contributor;
+    }
+
+	/**
 	 * Sort by count.
 	 */
 	private static function sort_by_count( $a, $b ) {
@@ -213,35 +269,22 @@ class Blicki_Suggestion {
 	 */
 	public static function get_contributors_for_entry( $entry_id ) {
 		$contributors = array();
-		$suggestions  = self::get_suggestions_for_entry( $entry_id );
 
-		foreach ( $suggestions as $suggestion_id ) {
-			$suggestion = get_post( $suggestion_id );
+		// Original author
+		$contributor = self::get_contributor_for_post( $entry_id );
+		$contributors[ $contributor->id ] = $contributor;
+		$contributors[ $contributor->id ]->count = 1;
 
-			if ( $suggestion->post_author ) {
-				if ( isset( $contributors[ $suggestion->post_author ] ) ) {
-					$contributors[ $suggestion->post_author ]->count ++;
-				} else {
-					$user = get_user_by( 'id', $suggestion->post_author );
-					$contributors[ $suggestion->post_author ] = (object) array(
-						'email' => $user->user_email,
-						'name'  => $user->display_name,
-						'count' => 1
-					);
-				}
+		// Contributors from suggstions
+		foreach ( self::get_suggestions_for_entry( $entry_id, 'approved' ) as $suggestion_id ) {
+			$suggestion  = get_post( $suggestion_id );
+			$contributor = self::get_contributor_for_post( $last );
+
+			if ( isset( $contributors[ $contributor->id ] ) ) {
+				$contributors[ $contributor->id ]->count ++;
 			} else {
-				$email = get_post_meta( $suggestion_id, '_blicki_author_email', true );
-				$name  = get_post_meta( $suggestion_id, '_blicki_author_name', true );
-				
-				if ( isset( $contributors[ $email ] ) ) {
-					$contributors[ $email ]->count ++;
-				} else {
-					$contributors[ $email ] = (object) array(
-						'email' => $email,
-						'name'  => $name,
-						'count' => 1
-					);
-				}
+				$contributors[ $contributor->id ] = $contributor;
+				$contributors[ $contributor->id ]->count = 1;
 			}
 		}
 		uasort( $contributors, array( __CLASS__, 'sort_by_count' ) );
