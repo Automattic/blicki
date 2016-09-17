@@ -77,25 +77,45 @@ class Blicki {
 		global $post;
 
 		if ( 'blicki' === $post->post_type ) {
-			// add TOC
-			$toc = "<div class='toc'></div>";
-
-			// add editor
-			$editor = $this->get_editor( $content, $post->ID );
-
 			// construct the wrapped output here as normal
 			ob_start();
-			?>
-			<div id='post-wrapper-<?= esc_attr( $post->ID ); ?>' class='post-wrapper' style='border: 1px solid black;'>
-				<span>Content tab</span>
-				<?= $toc; ?>
-				<?= $content; ?>
-			</div>
-			<div>
-				<span>Editor tab</span>
-				<?= $editor; ?>
-			</div>
-			<?php
+
+			if ( isset( $_GET['source'] ) && isset( $_GET['revision'] ) ) {
+				// showing the revision diff for this pair
+				// TODO either this needs our own styling or we need to figure out what the admin page uses and enqueue that
+				Blicki_Diff_Viewer::show_diffs( $_GET['source'], $_GET['revision'] );
+
+				// give a link back to the post
+				?>
+				<a href="<?php echo get_permalink(); ?>">Return to post</a>
+				<?php
+			} else {
+				// showing the post with editor, etc
+				$toc = "<div class='toc'></div>";
+
+				// add editor
+				$editor = $this->get_editor( $content, $post->ID );
+
+				// grab revision history
+				$revisions = $this->get_revision_history( $post->ID );
+
+				?>
+				<div id='post-wrapper-<?= esc_attr( $post->ID ); ?>' class='post-wrapper' style='border: 1px solid black;'>
+					<span>Content tab</span>
+					<?= $toc; ?>
+					<?= $content; ?>
+				</div>
+				<div>
+					<span>Editor tab</span>
+					<?= $editor; ?>
+				</div>
+				<div style='border: 1px solid black'>
+					<span>Revision History tab</span>
+					<?= $revisions; ?>
+				</div>
+				<?php
+			}
+
 			return ob_get_clean();
 		}
 
@@ -123,6 +143,42 @@ class Blicki {
 		<?php
 		$editor = ob_get_clean();
 		return $editor;
+	}
+
+	/**
+	 * Produces the HTML for the revision history
+	 */
+	private function get_revision_history( $id ) {
+		ob_start();
+		$revisions = Blicki_Revision::get_revisions_for_entry( $id );
+
+        if ( $revisions ) {
+            echo '<ul class="blicki-revision-list">';
+			$prev_revision_id = null;
+            foreach ( $revisions as $revision_id ) {
+                $revision = get_post( $revision_id );
+                $date     = date_i18n( get_option( 'date_format' ), strtotime( $revision->post_date ) );
+
+                if ( $revision->post_author ) {
+                    $user     = get_user_by( 'id', $revision->post_author );
+                    $username = $user->display_name;
+                } else {
+                    $username = '';
+                }
+
+				if ( ! empty( $prev_revision_id ) ) {
+					$revisions_url = add_query_arg( array( 'source' => $prev_revision_id, 'revision' => $revision_id ), get_permalink( $id ) );
+
+					echo '<li class="blicki-revision-list-item">' . sprintf( esc_html_x( 'Revision by %s on %s', 'Revision by user on date', 'blicki' ), '<strong>' . $username . '</strong>', $date ) . '<br/><a href="' . esc_url( $revisions_url ) . '">' . esc_html__( 'Show diff', 'blicki' ) . '</a></li>';
+				} else {
+					echo '<li class="blicki-revision-list-item">' . sprintf( esc_html_x( 'Revision by %s on %s', 'Revision by user on date', 'blicki' ), '<strong>' . $username . '</strong>', $date ) . '</li>';
+				}
+
+				$prev_revision_id = $revision_id;
+            }
+            echo '</ul>';
+        }
+		return ob_get_clean();
 	}
 }
 new Blicki();

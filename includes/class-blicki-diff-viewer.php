@@ -46,9 +46,8 @@ class Blicki_Diff_Viewer {
 		// TODO approve/reject buttons
 	}
 
-	public function show_diffs( $source_id, $revision_id ) {
+	public static function show_diffs( $source_id, $revision_id ) {
 		// get posts, call wp_text_diff
-		// TODO needs to diff titles too
 		$source = get_post( $source_id );
 		$revision = get_post( $revision_id );
 
