@@ -17,7 +17,16 @@ class Blicki_Diff_Viewer {
 
 
 	public function add_menu() {
-		add_submenu_page( 'edit.php?post_type=blicki', 'Revision Review', 'Revision Review', 'edit_others_posts', 'blicki-show-diff', array( $this, 'admin_revision_viewer' ) );
+		add_submenu_page(
+			'edit.php?post_type=blicki',
+			__( 'Revision Review', 'blicki' ),
+			__( 'Revision Review', 'blicki' ),
+			'edit_others_posts',
+			'blicki-show-diff',
+			array( $this, 'admin_revision_viewer' )
+		);
+
+		remove_submenu_page( 'edit.php?post_type=blicki', 'blicki-show-diff' );
 	}
 
 	public function admin_revision_viewer() {
