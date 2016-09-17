@@ -203,7 +203,7 @@ class Blicki_Suggestion {
 	 * @param  int $suggestion_id
 	 * @return object
 	 */
-	public static function get_contributor_for_suggestion( $suggestion_id ) {
+	public static function get_contributor_for_post( $suggestion_id ) {
 		$suggestion = get_post( $suggestion_id );
 
 		if ( $suggestion->post_author ) {
@@ -239,7 +239,7 @@ class Blicki_Suggestion {
             'post_status'    => 'approved',
         ) );
 		if ( $last ) {
-			$contributor = self::get_contributor_for_suggestion( $last );
+			$contributor = self::get_contributor_for_post( $last );
 		} else {
 			$entry = get_post( $id );
 			$user  = get_user_by( 'id', $entry->post_author );
@@ -269,11 +269,16 @@ class Blicki_Suggestion {
 	 */
 	public static function get_contributors_for_entry( $entry_id ) {
 		$contributors = array();
-		$suggestions  = self::get_suggestions_for_entry( $entry_id, 'approved' );
 
-		foreach ( $suggestions as $suggestion_id ) {
+		// Original author
+		$contributor = self::get_contributor_for_post( $entry_id );
+		$contributors[ $contributor->id ] = $contributor;
+		$contributors[ $contributor->id ]->count = 1;
+
+		// Contributors from suggstions
+		foreach ( self::get_suggestions_for_entry( $entry_id, 'approved' ) as $suggestion_id ) {
 			$suggestion  = get_post( $suggestion_id );
-			$contributor = self::get_contributor_for_suggestion( $last );
+			$contributor = self::get_contributor_for_post( $last );
 
 			if ( isset( $contributors[ $contributor->id ] ) ) {
 				$contributors[ $contributor->id ]->count ++;
