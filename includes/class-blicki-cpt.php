@@ -63,7 +63,7 @@ class Blicki_CPT {
                 'menu_icon'         => 'dashicons-media-text',
             ) )
         );
-		register_post_type( 'blicki-revision', array(
+		register_post_type( 'blicki-suggestion', array(
 			'public'   => false,
 			'supports' => array(),
 			'show_ui'  => false,

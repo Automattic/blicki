@@ -152,6 +152,7 @@ class Blicki {
 	 * Produces the HTML for the revision history
 	 */
 	private function get_revision_history( $id ) {
+		return "<p>TODO use real revisions</p>";
 		ob_start();
 		$revisions = Blicki_Revision::get_revisions_for_entry( $id );
 

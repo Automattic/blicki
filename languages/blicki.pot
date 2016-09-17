@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blicki ¯\\_(ツ)_/¯\n"
 "Report-Msgid-Bugs-To: https://github.com/Automattic/blicki/issues\n"
-"POT-Creation-Date: 2016-09-17 00:02:42+00:00\n"
+"POT-Creation-Date: 2016-09-17 19:27:27+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -12,6 +12,10 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "X-Generator: grunt-wp-i18n 0.5.4\n"
+
+#: blicki.php:175 includes/class-blicki-revision.php:161
+msgid "Show diff"
+msgstr ""
 
 #: includes/class-blicki-cpt.php:25
 msgid "Entry"
@@ -73,16 +77,31 @@ msgstr ""
 msgid "This is where you can create and manage %s."
 msgstr ""
 
-#: includes/class-blicki-revisions.php:66
+#: includes/class-blicki-diff-viewer.php:22
+#: includes/class-blicki-diff-viewer.php:23
+msgid "Suggestion Review"
+msgstr ""
+
+#: includes/class-blicki-edit-form.php:97
+msgid "Please enter a valid email address."
+msgstr ""
+
+#: includes/class-blicki-edit-form.php:102
+msgid "This change has already been submitted and is pending approval."
+msgstr ""
+
+#: includes/class-blicki-edit-form.php:112
+msgid ""
+"Thanks for submitting your suggestion. A moderator will approve your "
+"changes as soon as possible."
+msgstr ""
+
+#: includes/class-blicki-revision.php:66
 msgid "Suggest changes"
 msgstr ""
 
-#: includes/class-blicki-revisions.php:127
-msgid "Blicki Revisions"
-msgstr ""
-
-#: includes/class-blicki-revisions.php:152
-msgid "Show diff"
+#: includes/class-blicki-revision.php:127
+msgid "Blicki Suggestions"
 msgstr ""
 
 #. Plugin Name of the plugin/theme
@@ -101,6 +120,11 @@ msgstr ""
 msgid "https://automattic.com/"
 msgstr ""
 
+#: blicki.php:175
+msgctxt "Revision by user on date"
+msgid "Revision by %s on %s"
+msgstr ""
+
 #: includes/class-blicki-cpt.php:54
 msgctxt "Blicki permalink - resave permalinks after changing this"
 msgid "wiki"
@@ -111,7 +135,12 @@ msgctxt "Blicki post type archive slug - resave permalinks after changing this"
 msgid "wiki"
 msgstr ""
 
-#: includes/class-blicki-revisions.php:152
-msgctxt "Revision by user on date"
-msgid "Revision by %s on %s"
+#: includes/class-blicki-revision.php:160
+msgctxt "Suggestion by user on date"
+msgid "Suggestion by %s on %s"
+msgstr ""
+
+#: includes/class-blicki-revision.php:162
+msgctxt "X changes"
+msgid "%d changes"
 msgstr ""

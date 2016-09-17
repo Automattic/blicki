@@ -4,28 +4,28 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Blicki revision handling.
+ * Blicki suggestion handling.
  */
-class Blicki_Revision {
+class Blicki_Suggestion {
 
     /**
-     * Revision ID.
+     * Post ID.
      * @var integer
      */
     private $entry_id = 0;
 
     /**
-     * Revision ID.
+     * Suggestion ID.
      * @var integer
      */
-    private $revision_id = 0;
+    private $suggestion_id = 0;
 
     /**
      * Construct.
      */
     public function __construct() {
-        add_action( 'post_submitbox_start', array( $this, 'pending_revision_button' ) );
-        add_filter( 'wp_insert_post_data' , array( $this, 'maybe_create_revision' ), 20, 2 );
+        add_action( 'post_submitbox_start', array( $this, 'pending_suggestion_button' ) );
+        add_filter( 'wp_insert_post_data' , array( $this, 'maybe_create_suggestion' ), 20, 2 );
         add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
     }
 
@@ -54,9 +54,9 @@ class Blicki_Revision {
     }
 
     /**
-     * Allow a post to be saved as a revision rather than updated right away.
+     * Allow a post to be saved as a suggestion rather than updated right away.
      */
-    public function pending_revision_button() {
+    public function pending_suggestion_button() {
         global $post;
 
         if ( 'blicki' !== $post->post_type ) {
@@ -67,21 +67,21 @@ class Blicki_Revision {
     }
 
     /**
-     * Create a revision for this wiki entry if needed.
+     * Create a suggestion for this wiki entry if needed.
      * @param array $data
      * @param array $postarr
      */
-    public function maybe_create_revision( $data, $postarr ) {
+    public function maybe_create_suggestion( $data, $postarr ) {
         $post_id = ! empty( $postarr['ID'] ) ? $postarr['ID'] : 0;
 
         if ( $post_id && $this->is_suggesting_changes( $post_id ) ) {
             $old_post_data = get_post( $post_id );
 
-            // If content has changed, create a revision and prevent content from updating.
+            // If content has changed, create a suggestion and prevent content from updating.
             if ( $old_post_data->post_content !== $data['post_content'] || $old_post_data->post_title !== $data['post_title'] ) {
-                // Create revision.
+                // Create suggestion.
                 $this->entry_id    = $post_id;
-                $this->revision_id = $this->create_revision( $post_id, $data );
+                $this->suggestion_id = $this->create_suggestion( $post_id, $data );
 
                 // Remove content update.
                 $data['post_content'] = $old_post_data->post_content;
@@ -96,22 +96,19 @@ class Blicki_Revision {
     }
 
     /**
-     * Create a revision for this wiki entry.
+     * Create a suggestion for this wiki entry.
      * @param int $post_id
      * @param array $data
      */
-    public static function create_revision( $post_id, $data ) {
-        $post_id = (int) wp_insert_post( array(
-            'post_type'    => 'blicki-revision',
-			'post_name'    => md5( $data['post_content'] ),
+    public static function create_suggestion( $post_id, $data ) {
+        return (int) wp_insert_post( array(
+            'post_type'    => 'blicki-suggestion',
             'post_title'   => $data['post_title'],
             'post_content' => $data['post_content'],
             'post_parent'  => $post_id,
             'post_status'  => 'pending',
             'post_author'  => get_current_user_id(),
         ) );
-
-		update_post_meta( $data, '_blicki_author_email', isset( $data['author_email'] ) ? $data['author_email'] : '' );
     }
 
     /**
@@ -120,20 +117,20 @@ class Blicki_Revision {
      * @return string
      */
     public function redirect_to_diff( $url ) {
-        return $this->get_diff_viewer_url( $this->entry_id, $this->revision_id );
+        return $this->get_diff_viewer_url( $this->entry_id, $this->suggestion_id );
     }
 
     /**
      * Add meta boxes.
      */
     public function add_meta_boxes() {
-        add_meta_box( 'blick-revisions', __( 'Blicki Revisions', 'blicki' ), array( $this, 'blick_revisions_content' ), 'blicki', 'side', 'high' );
+        add_meta_box( 'blick-suggestions', __( 'Blicki Suggestions', 'blicki' ), array( $this, 'blick_suggestions_content' ), 'blicki', 'side', 'high' );
     }
 
     /**
-     * Show revisions when editing a wiki entry.
+     * Show suggestions when editing a wiki entry.
      */
-    public function blick_revisions_content() {
+    public function blick_suggestions_content() {
         global $post;
 
 		if ( ! class_exists( 'WP_Text_Diff_Renderer_Table', false ) ) {
@@ -141,27 +138,27 @@ class Blicki_Revision {
 		}
 
         $post_id   = $post->ID;
-        $revisions = $this->get_revisions_for_entry( $post_id );
+        $suggestions = $this->get_suggestions_for_entry( $post_id );
 
-        if ( $revisions ) {
-            echo '<ul class="blicki-revision-list">';
-            foreach ( $revisions as $revision_id ) {
-                $revision = get_post( $revision_id );
-                $date     = date_i18n( get_option( 'date_format' ), strtotime( $revision->post_date ) );
+        if ( $suggestions ) {
+            echo '<ul class="blicki-suggestion-list">';
+            foreach ( $suggestions as $suggestion_id ) {
+                $suggestion = get_post( $suggestion_id );
+                $date     = date_i18n( get_option( 'date_format' ), strtotime( $suggestion->post_date ) );
 
-                if ( $revision->post_author ) {
-                    $user     = get_user_by( 'id', $revision->post_author );
+                if ( $suggestion->post_author ) {
+                    $user     = get_user_by( 'id', $suggestion->post_author );
                     $username = $user->display_name;
                 } else {
                     $username = '';
                 }
 
-				$text_diff = new Text_Diff( explode( "\n", $post->post_content ), explode( "\n", $revision->post_content ) );
+				$text_diff = new Text_Diff( explode( "\n", $post->post_content ), explode( "\n", $suggestion->post_content ) );
 
                 echo
-					'<li class="blicki-revision-list-item">',
-					sprintf( esc_html_x( 'Revision by %s on %s', 'Revision by user on date', 'blicki' ), '<strong>' . $username . '</strong>', $date ),
-					'<br/><a href="' . esc_url( $this->get_diff_viewer_url( $post_id, $revision_id ) ) . '" title="' . esc_html__( 'Show diff', 'blicki' ) . '">',
+					'<li class="blicki-suggestion-list-item">',
+					sprintf( esc_html_x( 'Suggestion by %s on %s', 'Suggestion by user on date', 'blicki' ), '<strong>' . $username . '</strong>', $date ),
+					'<br/><a href="' . esc_url( $this->get_diff_viewer_url( $post_id, $suggestion_id ) ) . '" title="' . esc_html__( 'Show diff', 'blicki' ) . '">',
 					sprintf( esc_html_x( '%d changes', 'X changes', 'blicki' ), sizeof( $text_diff->_edits ) ),
 					'</a>',
 					'</li>';
@@ -173,26 +170,26 @@ class Blicki_Revision {
     /**
      * Get URL to diff view.
      * @param  int $source_id
-     * @param  int $revision_id
+     * @param  int $suggestion_id
      * @return string
      */
-    public static function get_diff_viewer_url( $source_id, $revision_id ) {
-        return add_query_arg( array( 'page' => 'blicki-show-diff', 'revision' => absint( $revision_id ), 'source' => absint( $source_id ) ), admin_url( 'edit.php?post_type=blicki' ) );
+    public static function get_diff_viewer_url( $source_id, $suggestion_id ) {
+        return add_query_arg( array( 'page' => 'blicki-show-diff', 'suggestion' => absint( $suggestion_id ), 'source' => absint( $source_id ) ), admin_url( 'edit.php?post_type=blicki' ) );
     }
 
     /**
-     * Get IDs of revisions for an entry.
+     * Get IDs of suggestions for an entry.
      * @param  int $id
      * @return int[]
      */
-    public static function get_revisions_for_entry( $id ) {
+	public static function get_suggestions_for_entry( $id ) {
         return get_posts( array(
             'fields'         => 'ids',
-            'post_type'      => 'blicki-revision',
+			'post_type'      => 'blicki-suggestion',
             'post_parent'    => $id,
             'posts_per_page' => -1,
             'post_status'    => 'any',
         ) );
     }
 }
-new Blicki_Revision();
+new Blicki_Suggestion();
