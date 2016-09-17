@@ -1,0 +1,33 @@
+# Editors
+project.xml
+project.properties
+/nbproject/private/
+.buildpath
+.project
+.settings*
+.idea
+
+# Grunt
+/node_modules/
+
+# Sass
+.sass-cache/
+
+# OS X metadata
+.DS_Store
+
+# Windows junk
+Thumbs.db
+
+# ApiGen
+/wc-apidocs/
+
+# Unit tests
+/tmp
+/tests/bin/tmp
+
+# Logs
+/logs
+
+# Composer
+/vendor/
