@@ -27,6 +27,29 @@ class Blicki_Content {
 		) );
     }
 
+	/**
+	 * Get contributors.
+	 * @param  int $entry_id
+	 * @return string
+	 */
+	public function get_contributors_html( $entry_id ) {
+		$html         = '';
+		$contributors = Blicki_Suggestion::get_contributors_for_entry( $entry_id );
+
+		if ( $contributors ) {
+			$html .= '<div class="blicky-contributors"><ol>';
+			foreach ( $contributors as $contributor ) {
+				$html .= '<li class="blicky-contributors-user">';
+				$html .= get_avatar( $contributor->email, '100' );
+				$html .= '<div class="blicky-contributors-user-name">' . esc_html( $contributor->name ) . '</div>';
+				$html .= '<div class="blicky-contributors-user-count">' . sprintf( _n( '%d contribution', '%d contributions', $contributor->count, 'blicki' ), $contributor->count ) . '</div>';
+				$html .= '</li>';
+			}
+			$html .= '</ol></div>';
+		}
+		return $html;
+	}
+
     /**
 	 * Filter for 'the_content' to wrap a wiki entry in all our custom code.
 	 */
@@ -101,6 +124,7 @@ class Blicki_Content {
 				<div class='blicky-entry-content' id='post<?php echo esc_attr( $post->ID ); ?>'>
 					<?php echo $content; ?>
 				</div>
+				<?php echo $this->get_contributors_html( $post->ID ); ?>
 				<?php
 			}
 

@@ -197,33 +197,46 @@ class Blicki_Suggestion {
     }
 
 	/**
+	 * Sort by count.
+	 */
+	private static function sort_by_count( $a, $b ) {
+		if ( $a->count === $b->count ) {
+        	return 0;
+    	}
+    	return ( $a->count < $b->count ) ? -1 : 1;
+	}
+
+	/**
 	 * Get a list of contributors to a wiki entry.
 	 * @param  int $entry_id
 	 * @return array
 	 */
 	public static function get_contributors_for_entry( $entry_id ) {
 		$contributors = array();
-		$suggestions  = $this->get_suggestions_for_entry( $entry_id );
+		$suggestions  = self::get_suggestions_for_entry( $entry_id );
 
-		foreach ( $suggestions as $suggestion ) {
+		foreach ( $suggestions as $suggestion_id ) {
+			$suggestion = get_post( $suggestion_id );
+
 			if ( $suggestion->post_author ) {
 				if ( isset( $contributors[ $suggestion->post_author ] ) ) {
 					$contributors[ $suggestion->post_author ]->count ++;
 				} else {
 					$user = get_user_by( 'id', $suggestion->post_author );
 					$contributors[ $suggestion->post_author ] = (object) array(
-						'email' => $user->email,
+						'email' => $user->user_email,
 						'name'  => $user->display_name,
 						'count' => 1
 					);
 				}
 			} else {
-				$email = get_post_meta( $suggestion->ID, '_blicki_author_email', true );
-				$name  = get_post_meta( $suggestion->ID, '_blicki_author_name', true );
+				$email = get_post_meta( $suggestion_id, '_blicki_author_email', true );
+				$name  = get_post_meta( $suggestion_id, '_blicki_author_name', true );
+				
 				if ( isset( $contributors[ $email ] ) ) {
 					$contributors[ $email ]->count ++;
 				} else {
-					$contributors[ $suggestion->post_author ] = (object) array(
+					$contributors[ $email ] = (object) array(
 						'email' => $email,
 						'name'  => $name,
 						'count' => 1
@@ -231,7 +244,8 @@ class Blicki_Suggestion {
 				}
 			}
 		}
-		return $contributors;
+		uasort( $contributors, array( __CLASS__, 'sort_by_count' ) );
+		return array_reverse( $contributors );
 	}
 }
 new Blicki_Suggestion();
