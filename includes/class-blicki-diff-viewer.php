@@ -69,10 +69,10 @@ class Blicki_Diff_Viewer {
 					'post_status' => 'approved'
 				) );
 
-				echo "<h2>Suggestion Approved</h2>";
+				echo "<h2>" . __( 'Suggestion Approved', 'blicki' ) . "</h2>";
 			} else if ( 'reject' == $_POST['action'] ) {
 				wp_delete_post( $suggestion_id );
-				echo "<h2>Suggestion Rejected</h2>";
+				echo "<h2>" . __( 'Suggestion Rejected', 'blicki' ) . "</h2>";
 			}
 			echo "<a href='post.php?post=" . $source_id . "&action=edit'>Back to post</a>";
 		} else {
@@ -84,12 +84,12 @@ class Blicki_Diff_Viewer {
 			<form method='POST'>
 				<?php wp_nonce_field( $nonce_name ); ?>
 				<input type='hidden' name='action' value='reject'>
-				<button type='submit'>Reject Suggestion</button>
+				<button type='submit'><?php _e( 'Reject Suggestion', 'blicki' ); ?></button>
 			</form>
 			<form method='POST'>
 				<?php wp_nonce_field( $nonce_name ); ?>
 				<input type='hidden' name='action' value='approve'>
-				<button type='submit'>Approve Suggestion</button>
+				<button type='submit'><?php _e( 'Approve Suggestion', 'blicki' ); ?></button>
 			</form>
 			<?php
 		}
@@ -100,7 +100,7 @@ class Blicki_Diff_Viewer {
 		$source = get_post( $source_id );
 		$suggestion = get_post( $suggestion_id );
 
-		$diff_html = wp_text_diff( $source->post_title . "\n" . $source->post_content, $suggestion->post_title . "\n" . $suggestion->post_content, array( 'title' => 'Suggestion differences', 'title_left' => 'Original', 'title_right' => 'Suggested' ) );
+		$diff_html = wp_text_diff( $source->post_title . "\n" . $source->post_content, $suggestion->post_title . "\n" . $suggestion->post_content, array( 'title' => __( 'Suggestion differences', 'blicki' ), 'title_left' => __( 'Original', 'blicki' ), 'title_right' => __( 'Suggested', 'blicki' ) ) );
 
 		echo $diff_html;
 	}

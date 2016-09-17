@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blicki ¯\\_(ツ)_/¯\n"
 "Report-Msgid-Bugs-To: https://github.com/Automattic/blicki/issues\n"
-"POT-Creation-Date: 2016-09-17 19:27:27+00:00\n"
+"POT-Creation-Date: 2016-09-17 22:12:39+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,68 +13,93 @@ msgstr ""
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "X-Generator: grunt-wp-i18n 0.5.4\n"
 
-#: blicki.php:175 includes/class-blicki-revision.php:161
+#: includes/class-blicki-content.php:26
+msgid "Table of Contents"
+msgstr ""
+
+#: includes/class-blicki-content.php:61
+msgid "Revision Changes"
+msgstr ""
+
+#: includes/class-blicki-content.php:61
+#: includes/class-blicki-diff-viewer.php:103
+msgid "Original"
+msgstr ""
+
+#: includes/class-blicki-content.php:61
+msgid "Revised"
+msgstr ""
+
+#: includes/class-blicki-content.php:66
+msgid "Return to entry"
+msgstr ""
+
+#: includes/class-blicki-content.php:136 includes/class-blicki-revision.php:165
 msgid "Show diff"
 msgstr ""
 
-#: includes/class-blicki-cpt.php:25
+#: includes/class-blicki-cpt.php:26
 msgid "Entry"
 msgstr ""
 
-#: includes/class-blicki-cpt.php:26
+#: includes/class-blicki-cpt.php:27
 msgid "Entries"
 msgstr ""
 
-#: includes/class-blicki-cpt.php:32
+#: includes/class-blicki-cpt.php:33
 msgid "Wiki"
 msgstr ""
 
-#: includes/class-blicki-cpt.php:33
+#: includes/class-blicki-cpt.php:34
 msgid "All %s"
 msgstr ""
 
-#: includes/class-blicki-cpt.php:34
+#: includes/class-blicki-cpt.php:35
 msgid "Add New"
 msgstr ""
 
-#: includes/class-blicki-cpt.php:35
+#: includes/class-blicki-cpt.php:36
 msgid "Add %s"
 msgstr ""
 
-#: includes/class-blicki-cpt.php:36
+#: includes/class-blicki-cpt.php:37
 msgid "Edit"
 msgstr ""
 
-#: includes/class-blicki-cpt.php:37
+#: includes/class-blicki-cpt.php:38
 msgid "Edit %s"
 msgstr ""
 
-#: includes/class-blicki-cpt.php:38
+#: includes/class-blicki-cpt.php:39
 msgid "New %s"
 msgstr ""
 
-#: includes/class-blicki-cpt.php:39 includes/class-blicki-cpt.php:40
+#: includes/class-blicki-cpt.php:40 includes/class-blicki-cpt.php:41
 msgid "View %s"
 msgstr ""
 
-#: includes/class-blicki-cpt.php:41
+#: includes/class-blicki-cpt.php:42
 msgid "Search %s"
 msgstr ""
 
-#: includes/class-blicki-cpt.php:42
+#: includes/class-blicki-cpt.php:43
 msgid "No %s found"
 msgstr ""
 
-#: includes/class-blicki-cpt.php:43
+#: includes/class-blicki-cpt.php:44
 msgid "No %s found in trash"
 msgstr ""
 
-#: includes/class-blicki-cpt.php:44
+#: includes/class-blicki-cpt.php:45
 msgid "Parent %s"
 msgstr ""
 
-#: includes/class-blicki-cpt.php:46
+#: includes/class-blicki-cpt.php:47
 msgid "This is where you can create and manage %s."
+msgstr ""
+
+#: includes/class-blicki-cpt.php:73
+msgid "Approved"
 msgstr ""
 
 #: includes/class-blicki-diff-viewer.php:22
@@ -82,15 +107,55 @@ msgstr ""
 msgid "Suggestion Review"
 msgstr ""
 
-#: includes/class-blicki-edit-form.php:97
+#: includes/class-blicki-diff-viewer.php:72
+msgid "Suggestion Approved"
+msgstr ""
+
+#: includes/class-blicki-diff-viewer.php:75
+msgid "Suggestion Rejected"
+msgstr ""
+
+#: includes/class-blicki-diff-viewer.php:87
+msgid "Reject Suggestion"
+msgstr ""
+
+#: includes/class-blicki-diff-viewer.php:92
+msgid "Approve Suggestion"
+msgstr ""
+
+#: includes/class-blicki-diff-viewer.php:103
+msgid "Suggestion differences"
+msgstr ""
+
+#: includes/class-blicki-diff-viewer.php:103
+msgid "Suggested"
+msgstr ""
+
+#: includes/class-blicki-edit-form.php:35
+msgid "Enter your name:"
+msgstr ""
+
+#: includes/class-blicki-edit-form.php:39
+msgid "Enter your email address:"
+msgstr ""
+
+#: includes/class-blicki-edit-form.php:44
+msgid "Suggest Changes"
+msgstr ""
+
+#: includes/class-blicki-edit-form.php:106
+msgid "Please enter your name."
+msgstr ""
+
+#: includes/class-blicki-edit-form.php:111
 msgid "Please enter a valid email address."
 msgstr ""
 
-#: includes/class-blicki-edit-form.php:102
+#: includes/class-blicki-edit-form.php:116
 msgid "This change has already been submitted and is pending approval."
 msgstr ""
 
-#: includes/class-blicki-edit-form.php:112
+#: includes/class-blicki-edit-form.php:127
 msgid ""
 "Thanks for submitting your suggestion. A moderator will approve your "
 "changes as soon as possible."
@@ -100,7 +165,7 @@ msgstr ""
 msgid "Suggest changes"
 msgstr ""
 
-#: includes/class-blicki-revision.php:127
+#: includes/class-blicki-revision.php:131
 msgid "Blicki Suggestions"
 msgstr ""
 
@@ -120,27 +185,27 @@ msgstr ""
 msgid "https://automattic.com/"
 msgstr ""
 
-#: blicki.php:175
+#: includes/class-blicki-content.php:136
 msgctxt "Revision by user on date"
 msgid "Revision by %s on %s"
 msgstr ""
 
-#: includes/class-blicki-cpt.php:54
+#: includes/class-blicki-cpt.php:55
 msgctxt "Blicki permalink - resave permalinks after changing this"
 msgid "wiki"
 msgstr ""
 
-#: includes/class-blicki-cpt.php:61
+#: includes/class-blicki-cpt.php:62
 msgctxt "Blicki post type archive slug - resave permalinks after changing this"
 msgid "wiki"
 msgstr ""
 
-#: includes/class-blicki-revision.php:160
+#: includes/class-blicki-revision.php:164
 msgctxt "Suggestion by user on date"
 msgid "Suggestion by %s on %s"
 msgstr ""
 
-#: includes/class-blicki-revision.php:162
+#: includes/class-blicki-revision.php:166
 msgctxt "X changes"
 msgid "%d changes"
 msgstr ""

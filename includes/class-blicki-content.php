@@ -23,7 +23,7 @@ class Blicki_Content {
 		wp_register_script( 'blicki_js', plugins_url( 'assets/js/blicki.js', BLICKI_FILE ), array( 'jquery' ), BLICKI_VERSION, true );
 		wp_enqueue_style( 'blicki_css', plugins_url( 'assets/css/blicki.css', BLICKI_FILE ), array( 'revisions' ) );
 		wp_localize_script( 'blicki_js', 'blicki_js_params', array(
-			'toc' => __( 'Table of Contents', 'blickui' ),
+			'toc' => __( 'Table of Contents', 'blicki' ),
 		) );
     }
 
@@ -58,7 +58,7 @@ class Blicki_Content {
 				$revision = get_post( $revision_id );
 				$revision_text = $revision->post_title . "\n" . $revision->post_content;
 
-				$diff_html = wp_text_diff( $source_text, $revision_text, array( 'title' => 'Revision Changes', 'title_left' => 'Original', 'title_right' => 'Revised' ) );
+				$diff_html = wp_text_diff( $source_text, $revision_text, array( 'title' => __( 'Revision Changes', 'blicki' ), 'title_left' => __( 'Original', 'blicki' ), 'title_right' => __( 'Revised', 'blicki' ) ) );
 
 				echo $diff_html;
 
