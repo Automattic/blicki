@@ -95,6 +95,7 @@ class Blicki_Content {
 				// grab revision history
 				$revisions = $this->get_revision_history( $post->ID );
 				?>
+				<hr>
 				<div class='blicki__header'>
 					<div class='blicki__latest'>
 						<?php
@@ -123,6 +124,7 @@ class Blicki_Content {
 						</a>
 					</div>
 				</div>
+				<hr>
 				<div class='blicky-edit'>
 					<?php echo $editor; ?>
 				</div>
