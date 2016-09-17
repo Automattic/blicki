@@ -6,6 +6,7 @@ project.properties
 .project
 .settings*
 .idea
+*.swp
 
 # Grunt
 /node_modules/
