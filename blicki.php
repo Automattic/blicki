@@ -67,7 +67,7 @@ class Blicki {
      */
     public function scripts() {
 		wp_enqueue_script( 'blicki_js', plugins_url( 'assets/js/blicki.js', __FILE__ ), array( 'jquery' ), '1.0.0', true );
-		wp_enqueue_style( 'blicki_css', plugins_url( 'assets/css/blicki.css', __FILE__ ), false );
+		wp_enqueue_style( 'blicki_css', plugins_url( 'assets/css/blicki.css', __FILE__ ), array( 'revisions' ) );
     }
 
 	/**

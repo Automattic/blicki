@@ -1,14 +1,1 @@
-.blicki__edit {
-  background: #ffffff; }
-
-.blicki__edit-details {
-  background: #f5f5f5;
-  margin-top: 2em;
-  padding: 1.5em; }
-  .blicki__edit-details input[type=email] {
-    background: #ffffff; }
-
-.blicki__edit-submit {
-  margin: 1em 20px 0 0; }
-
-/*# sourceMappingURL=blicki.css.map */
+.blicki__edit{background:#fff}.blicki__edit-details{background:#f5f5f5;margin-top:2em;padding:1.5em}.blicki__edit-details input[type=email]{background:#fff}.blicki__edit-submit{margin:1em 20px 0 0}table.diff,table.diff td,table.diff th{border:0}
