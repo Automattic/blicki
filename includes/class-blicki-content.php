@@ -164,7 +164,8 @@ class Blicki_Content {
 		$revisions = wp_get_post_revisions( $id );
 
         if ( $revisions ) {
-            echo '<ul class="blicki-revision-list">';
+        		echo '<div class="blicki__revision-heading">Revision History</div>';
+            echo '<ul class="blicki__revision-list">';
 			$prev_revision_id = 0;
             foreach ( array_reverse( $revisions ) as $revision ) {
 				$revision_id = $revision->ID;
@@ -173,13 +174,14 @@ class Blicki_Content {
                 if ( $revision->post_author ) {
                     $user     = get_user_by( 'id', $revision->post_author );
                     $username = $user->display_name;
+                    $avatar   = get_avatar_url( $user->email, '100' );
                 } else {
                     $username = '';
                 }
 
 				$revisions_url = add_query_arg( array( 'source' => $prev_revision_id, 'revision' => $revision_id ), get_permalink( $id ) );
 
-				echo '<li class="blicki-revision-list-item">' . sprintf( esc_html_x( 'Updated by %s on %s', 'Revision by user on date', 'blicki' ), '<strong>' . esc_html( $username ) . '</strong>', esc_html( $date ) ) . '<br/><a href="' . esc_url( $revisions_url ) . '">' . esc_html__( 'Show diff', 'blicki' ) . '</a></li>';
+				echo '<li class="blicki__revision-list-item"><div class="blicki__revision-info"><img class="blicki__revision-avatar" src="' . $avatar . '" />' . sprintf( esc_html_x( 'Updated by %s on %s', 'Revision by user on date', 'blicki' ), '<strong>' . esc_html( $username ) . '</strong>', esc_html( $date ) ) . '</div><a class="blicki__revision-link" href="' . esc_url( $revisions_url ) . '">' . esc_html__( 'Show diff', 'blicki' ) . '</a></li>';
 
 				$prev_revision_id = $revision_id;
             }

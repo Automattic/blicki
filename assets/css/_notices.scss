@@ -1,0 +1,16 @@
+.blicki-notice {
+	padding: 1em;
+
+	p {
+		margin: 0;
+		padding: 0;
+	}
+}
+
+.blicki-notice--success {
+	background: $green-light;
+}
+
+.blicki-notice--error {
+	background: $red-light;
+}

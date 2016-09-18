@@ -1,0 +1,35 @@
+.blicky-history {
+	background: $white;
+	border: 1px solid darken( $gray-light, 10% );
+	margin-bottom: 2em;
+}
+
+.blicki__revision-heading {
+	background: $gray-light;
+	font-weight: bold;
+	padding: 5px 15px;
+}
+
+.blicki__revision-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.blicki__revision-list-item {
+	align-items: center;
+	display: flex;
+	flex-wrap: wrap;
+	font-size: 0.8em;
+	justify-content: space-between;
+	padding: 10px 15px;
+
+	&:not(:last-child) {
+		border-bottom: 1px solid $gray-light;
+	}
+}
+
+.blicki__revision-avatar {
+	height: 18px;
+	margin-right: 5px;
+}
