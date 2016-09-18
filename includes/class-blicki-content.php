@@ -84,7 +84,6 @@ class Blicki_Content {
 				$source_date = date_i18n( get_option( 'date_format' ), strtotime( $source->post_date ) );
 				$revision_date = date_i18n( get_option( 'date_format' ), strtotime( $revision->post_date ) );
 
-
 				$diff_html = wp_text_diff(
 					$source_text,
 					$revision_text,
@@ -169,6 +168,12 @@ class Blicki_Content {
 			$prev_revision_id = 0;
             foreach ( array_reverse( $revisions ) as $revision ) {
 				$revision_id = $revision->ID;
+
+				if ( ! $prev_revision_id ) {
+					$prev_revision_id = $revision_id;
+					continue;
+				}
+
                 $date     = date_i18n( get_option( 'date_format' ), strtotime( $revision->post_date ) );
 
                 if ( $revision->post_author ) {
