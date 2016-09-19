@@ -50,8 +50,17 @@ class Blicki_Suggestion {
             return false;
         }
 		global $wpdb;
+
 		$merging_id = absint( $_POST['blicki-merge-from'] );
+		$merging    = get_post( $merging_id );
 		$wpdb->update( $wpdb->posts, array( 'post_status' => 'approved' ), array( 'ID' => $merging_id ) );
+
+		Blicki_History::log_event( $post_id, 'contributed', array(
+			'user_id'         => $merging->post_author,
+			'entry_timestamp' => strtotime( $merging->post_date ),
+			'user_name'       => get_post_meta( $merging_id, '_blicki_author_name', true ),
+			'user_email'      => get_post_meta( $merging_id, '_blicki_author_email', true ),
+		) );
 	}
 
     /**

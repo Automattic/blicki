@@ -26,21 +26,23 @@ class Blicki_History {
 
         if ( in_array( $type, self::$event_types ) ) {
             $data = wp_parse_args( $data, array(
-                'user_id'     => 0,
-                'revision_id' => 0,
-                'user_name'   => '',
-                'user_email'  => '',
+				'user_id'         => 0,
+				'revision_id'     => 0,
+				'user_name'       => '',
+				'user_email'      => '',
+				'event_timestamp' => time(),
             ) );
 
             $wpdb->insert(
                 $wpdb->prefix . 'blicky_history',
                 array(
-                    'entry_id'    => absint( $entry_id ),
-                    'user_id'     => $data['user_id'],
-                    'revision_id' => $data['revision_id'],
-                    'user_name'   => $data['user_name'],
-                    'user_email'  => $data['user_email'],
-                    'event'       => $type,
+					'entry_id'        => absint( $entry_id ),
+					'user_id'         => $data['user_id'],
+					'revision_id'     => $data['revision_id'],
+					'user_name'       => $data['user_name'],
+					'user_email'      => $data['user_email'],
+					'event'           => $type,
+					'event_timestamp' => $data['event_timestamp'],
                 )
             );
         }
