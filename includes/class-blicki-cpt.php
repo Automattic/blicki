@@ -15,6 +15,9 @@ class Blicki_CPT {
         add_action( 'init', array( $this, 'register_post_types' ) );
 		add_filter( 'wp_revisions_to_keep', array( $this, 'revisions_to_keep' ), 10, 2 );
 		add_action( 'save_post', array( $this, 'update_index' ) );
+		add_filter( 'manage_blicki_posts_columns', array( $this, 'columns_to_show' ) );
+		add_filter( 'manage_edit-blicki_sortable_columns', array( $this, 'columns_to_sort' ) );
+		add_action( 'manage_blicki_posts_custom_column', array( $this, 'data_for_column' ), 10, 2 );
     }
 
     /**
@@ -153,6 +156,33 @@ class Blicki_CPT {
 		}
 
 		update_option( '_blicki_index', $blicki_index );
+	}
+
+	public function columns_to_show( $columns ) {
+		return array_merge( $columns, array(
+			'pending_suggestions' => __( 'Pending Suggestions', 'blicki' ),
+			'approved_suggestions' => __( 'Approved Suggestions', 'blicki' ),
+		) );
+	}
+
+	public function columns_to_sort( $columns ) {
+		return array_merge( $columns, array(
+			'pending_suggestions' => 'pending_suggestions',
+			'approved_suggestions' => 'approved_suggestions'
+		) );
+	}
+
+	public function data_for_column( $column_name, $post_id ) {
+		switch ( $column_name ) {
+			case 'pending_suggestions':
+				$suggestions = Blicki_Suggestion::get_suggestions_for_entry( $post_id, 'pending' );
+				echo count( $suggestions );
+				break;
+			case 'approved_suggestions':
+				$suggestions = Blicki_Suggestion::get_suggestions_for_entry( $post_id, 'approved' );
+				echo count( $suggestions );
+				break;
+		}
 	}
 }
 new Blicki_CPT();
