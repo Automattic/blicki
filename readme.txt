@@ -47,9 +47,19 @@ Nah - we're adding a front-end blog editor, so you can leave the brackets behind
 
 Of course! That blicki. That blicki wiki.
 
-=Why is there a C in Blicki?=
+= Why is there a C in Blicki? =
 
 The truth is, bliki.com was registered in 1999 and is unavailable. The good news is, the C symbolizes something entirely new being generated out of two other entities (i.e. the Blog and the Wiki).
+
+= Can I set a blicki page as the front page of my site? =
+
+That setting isn't an option right now, and it's for a good reason. The front page of a wiki-style site is a great place to explain the purpose of the site and introduce navigation links around the blicki.
+
+Here's information on creating a static front page:
+
+https://codex.wordpress.org/Creating_a_Static_Front_Page
+
+
 
 
 == Changelog ==
