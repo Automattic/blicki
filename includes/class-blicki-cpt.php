@@ -78,8 +78,6 @@ class Blicki_CPT {
 			'show_in_admin_status_list' => false,
 		) );
 
-        /*
-        @todo in the future
         $singular = __( 'Topic', 'blicki' );
         $plural   = __( 'Topics', 'blicki' );
         register_taxonomy(
@@ -111,7 +109,7 @@ class Blicki_CPT {
 					'hierarchical' => false
 				),
             ) )
-        );*/
+        );
     }
 
 	/**
