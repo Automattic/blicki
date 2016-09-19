@@ -18,6 +18,7 @@ class Blicki_Notices {
      */
     public function __construct() {
 		add_action( 'admin_notices', array( $this, 'add_pending_suggestions_notice' ) );
+        add_action( 'admin_menu', array( $this, 'add_number_to_menu' ) );
     }
 
     public static function add( $notice_text, $type = 'error' ) {
@@ -58,6 +59,28 @@ class Blicki_Notices {
 				?>
 			</p></div>
 			<?php
+		}
+	}
+
+	public function add_number_to_menu() {
+		global $menu;
+
+		$suggestions = get_posts( array(
+            'fields'         => 'ids',
+			'post_type'      => 'blicki-suggestion',
+            'posts_per_page' => -1,
+            'post_status'    => 'pending',
+        ) );
+
+		$num = count( $suggestions );
+
+		if ( $num > 0 ) {
+			foreach ( $menu as $prio => $menu_item ) {
+				if ( 'Wiki' === $menu_item[0] ) {
+					$menu[$prio][0] .= " <span class='update-plugins count-" . $num . "'><span class='plugin-count'>" . $num . "</span></span>";
+					break;
+				}
+			}
 		}
 	}
 }

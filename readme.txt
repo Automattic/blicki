@@ -49,7 +49,7 @@ Of course! That blicki. That blicki wiki.
 
 = Why is there a C in Blicki? =
 
-The truth is, bliki.com was registered in 1999 and is unavailable. The good news is, the C symbolizes something entirely new being generated out of two other entities (i.e. the Blog and the Wiki).
+The 'C' stands for carrot. Also, bliki.com was registered in 1999 and is unavailable. 
 
 = Can I set a blicki page as the front page of my site? =
 
