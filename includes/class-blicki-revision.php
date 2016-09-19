@@ -138,8 +138,8 @@ class Blicki_Suggestion {
             'post_status'  => 'pending',
             'post_author'  => get_current_user_id(),
         ) );
-		update_post_meta( $data, '_blicki_author_email', isset( $data['author_email'] ) ? $data['author_email'] : '' );
-		update_post_meta( $data, '_blicki_author_name', isset( $data['author_name'] ) ? $data['author_name'] : '' );
+		update_post_meta( $post_id, '_blicki_author_email', isset( $data['author_email'] ) ? $data['author_email'] : '' );
+		update_post_meta( $post_id, '_blicki_author_name', isset( $data['author_name'] ) ? $data['author_name'] : '' );
 		return $post_id;
     }
 
@@ -175,21 +175,14 @@ class Blicki_Suggestion {
         if ( $suggestions ) {
             echo '<ul class="blicki-suggestion-list">';
             foreach ( $suggestions as $suggestion_id ) {
-                $suggestion = get_post( $suggestion_id );
-                $date     = date_i18n( get_option( 'date_format' ), strtotime( $suggestion->post_date ) );
-
-                if ( $suggestion->post_author ) {
-                    $user     = get_user_by( 'id', $suggestion->post_author );
-                    $username = $user->display_name;
-                } else {
-                    $username = '';
-                }
-
+				$suggestion  = get_post( $suggestion_id );
+				$date        = date_i18n( get_option( 'date_format' ), strtotime( $suggestion->post_date ) );
+				$contributor = self::get_contributor_for_post( $suggestion_id );
 				$text_diff = new Text_Diff( explode( "\n", $post->post_content ), explode( "\n", $suggestion->post_content ) );
 
                 echo
 					'<li class="blicki-suggestion-list-item">',
-					sprintf( esc_html_x( 'Suggestion by %s on %s', 'Suggestion by user on date', 'blicki' ), '<strong>' . $username . '</strong>', $date ),
+					sprintf( esc_html_x( 'Suggestion by %s on %s', 'Suggestion by user on date', 'blicki' ), '<strong>' . esc_url( $contributor->name ) . '</strong>', $date ),
 					'<br/><a href="' . esc_url( $this->get_diff_viewer_url( $post_id, $suggestion_id ) ) . '" title="' . esc_html__( 'Show diff', 'blicki' ) . '">',
 					sprintf( esc_html_x( '%d changes', 'X changes', 'blicki' ), sizeof( $text_diff->_edits ) ),
 					'</a>',
@@ -234,7 +227,7 @@ class Blicki_Suggestion {
 	public static function get_contributor_for_post( $suggestion_id ) {
 		$suggestion = get_post( $suggestion_id );
 
-		if ( $suggestion->post_author ) {
+		if ( $suggestion->post_author > 0 ) {
 			$user        = get_user_by( 'id', $suggestion->post_author );
 			$contributor = (object) array(
 				'id'    => $user->ID,
