@@ -13,7 +13,7 @@ class Blicki_Content {
      */
     public function __construct() {
         add_action( 'wp_enqueue_scripts', array( $this, 'scripts' ) );
-        add_filter( 'the_content', array( $this, 'wrap_wiki' ) );
+        add_filter( 'the_content', array( $this, 'wrap_wiki' ), 20 );
 		add_filter( 'the_content', array( $this, 'add_internal_links' ), 10, 2 );
     }
 
@@ -61,11 +61,11 @@ class Blicki_Content {
             // Enqueue our script.
             wp_enqueue_script( 'blicki_js' );
 
-			// Display notices.
-			Blicki_Notices::display();
-
 			// construct the wrapped output here as normal
 			ob_start();
+
+			// Display notices.
+			Blicki_Notices::display();
 
 			if ( isset( $_GET['source'] ) && isset( $_GET['revision'] ) ) {
 				$source_id = absint( $_GET['source'] );
@@ -197,6 +197,43 @@ class Blicki_Content {
 	}
 
 	/**
+	 * Format each title callback.
+	 * @return string
+	 */
+	private function wrap_post_title( $post_title ) {
+		return '[' . $post_title . ']';
+	}
+
+	/**
+	 * Get post titles from our wiki index.
+	 * @param  array $indexes
+	 * @return array
+	 */
+	private function get_post_titles_from_index( $indexes ) {
+		return array_map( array( $this, 'wrap_post_title' ), wp_list_pluck( $indexes, 'post_title' ) );
+	}
+
+	/**
+	 * Get post titles from our wiki index.
+	 * @param  array $indexes
+	 * @return array
+	 */
+	private function get_post_links_from_index( $indexes ) {
+		return wp_list_pluck( $indexes, 'post_link' );
+	}
+
+	/**
+	 * Get URLs.
+	 * @param  string $string
+	 * @return array
+	 */
+	private function get_internal_urls( $string ) {
+        $regex = '/' . addcslashes( home_url( '/' ), '/' ) . '[^\" ]+/i';
+        preg_match_all( $regex, $string, $matches );
+        return ( $matches[0] );
+	}
+
+	/**
 	 * Add internal links to our content.
 	 * @todo add transient cache here in the future.
 	 */
@@ -208,7 +245,7 @@ class Blicki_Content {
 		}
 
 		if ( 'blicki' === get_post_type( $post_id ) && ( $indexes = array_diff_key( get_option( '_blicki_index', array() ), array( $post_id => '' ) ) ) ) {
-			$content = str_replace( wp_list_pluck( $indexes, 'post_title' ), wp_list_pluck( $indexes, 'post_link' ), $content );
+			$content = str_replace( $this->get_post_titles_from_index( $indexes ), $this->get_post_links_from_index( $indexes ), $content );
 		}
 
 		return $content;
