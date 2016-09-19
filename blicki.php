@@ -99,6 +99,7 @@ revision_id bigint(20) NOT NULL default 0,
 user_name longtext NOT NULL,
 user_email longtext NOT NULL,
 event varchar(20) NOT NULL,
+event_timestamp datetime NOT NULL,
 PRIMARY KEY  (id)
 ) $collate;
 		";

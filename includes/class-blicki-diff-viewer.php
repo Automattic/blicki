@@ -74,6 +74,13 @@ class Blicki_Diff_Viewer {
 					'post_status' => 'approved'
 				) );
 
+				Blicki_History::log_event( $source_id, 'contributed', array(
+					'user_id'         => $suggestion->post_author,
+					'entry_timestamp' => strtotime( $suggestion->post_date ),
+					'user_name'       => get_post_meta( $suggestion_id, '_blicki_author_name', true ),
+					'user_email'      => get_post_meta( $suggestion_id, '_blicki_author_email', true ),
+				) );
+
 				echo "<h2>" . __( 'Suggestion Approved', 'blicki' ) . "</h2>";
 			} else if ( 'reject' === $_REQUEST['action'] ) {
 				wp_delete_post( $suggestion_id );
