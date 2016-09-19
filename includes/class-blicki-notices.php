@@ -46,6 +46,11 @@ class Blicki_Notices {
     }
 
 	public function add_pending_suggestions_notice() {
+		if ( isset( $_GET['page'] ) && 'blicki-show-diff' === $_GET['page'] ) {
+			// don't show this notice on the approval pages, that's silly
+			return;
+		}
+
 		$suggestions = get_posts( array(
             'fields'         => 'ids',
 			'post_type'      => 'blicki-suggestion',
