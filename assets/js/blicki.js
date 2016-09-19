@@ -60,7 +60,7 @@ jQuery(function( $ ) {
 		}
 
 		var toc_div = $( '<div class="blicki__toc-container"><strong>' + blicki_js_params.toc + '</strong></div>' );
-		var tocToggle = $( '<a href="javascript:;" class="blicki__toc-toggle">Hide</a>' );
+		var tocToggle = $( '<a href="javascript:;" class="blicki__toc-toggle">Show</a>' );
 		var list = $( '<ol class="blicki__toc"></ol></div>' );
 		headings.forEach( function( elem ) {
 			var listItem = $('<li>').addClass('toc-level' + elem.level);
