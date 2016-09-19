@@ -97,7 +97,7 @@ class Blicki_Submit_Form {
 			}
 
             // Create pending entry
-            $suggestion_id = wp_insert_post( array(
+            $entry_id = wp_insert_post( array(
                 'post_title'   => $title,
                 'post_content' => $content,
                 'post_author'  => $post_author,
@@ -105,9 +105,14 @@ class Blicki_Submit_Form {
                 'post_type'    => 'blicki',
             ) );
 
-            update_post_meta( $suggestion_id, '_blicki_author_email', $email );
-    		update_post_meta( $suggestion_id, '_blicki_author_name', $name );
+            update_post_meta( $entry_id, '_blicki_author_email', $email );
+    		update_post_meta( $entry_id, '_blicki_author_name', $name );
 
+            Blicki_History::log_event( $entry_id, 'submitted', array(
+                'user_id'     => $post_author,
+                'user_name'   => $name,
+                'user_email'  => $email,
+            ) );
             Blicki_Notices::add( __( 'Thanks for submitting a new entry. A moderator will approve your entry as soon as possible.', 'blicki' ), 'success' );
         } catch ( Exception $e ) {
             Blicki_Notices::add( $e->getMessage(), 'error' );
