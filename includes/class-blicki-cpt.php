@@ -160,10 +160,12 @@ class Blicki_CPT {
 		return array_merge( $columns, array(
 			'pending_suggestions' => __( 'Pending Suggestions', 'blicki' ),
 			'approved_suggestions' => __( 'Approved Suggestions', 'blicki' ),
+			'topics' => __( 'Topics', 'blicki' )
 		) );
 	}
 
 	public function columns_to_sort( $columns ) {
+		// topics are not sortable yet, and might not need to be
 		return array_merge( $columns, array(
 			'pending_suggestions' => 'pending_suggestions',
 			'approved_suggestions' => 'approved_suggestions'
@@ -179,6 +181,9 @@ class Blicki_CPT {
 			case 'approved_suggestions':
 				$suggestions = Blicki_Suggestion::get_suggestions_for_entry( $post_id, 'approved' );
 				echo count( $suggestions );
+				break;
+			case 'topics':
+				the_terms( $post_id, 'blicki_topics' );
 				break;
 		}
 	}
