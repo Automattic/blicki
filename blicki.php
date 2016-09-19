@@ -56,11 +56,13 @@ class Blicki {
      */
     public function includes() {
         include_once( BLICKI_DIR . 'includes/class-blicki-cpt.php' );
-        include_once( BLICKI_DIR . 'includes/class-blicki-revision.php' );
+        include_once( BLICKI_DIR . 'includes/class-blicki-suggestion.php' );
         include_once( BLICKI_DIR . 'includes/class-blicki-diff-viewer.php' );
 		include_once( BLICKI_DIR . 'includes/class-blicki-edit-form.php' );
+		include_once( BLICKI_DIR . 'includes/class-blicki-submit-form.php' );
 		include_once( BLICKI_DIR . 'includes/class-blicki-notices.php' );
 		include_once( BLICKI_DIR . 'includes/class-blicki-content.php' );
+		include_once( BLICKI_DIR . 'includes/class-blicki-shortcodes.php' );
     }
 }
 new Blicki();

@@ -10,23 +10,36 @@
 	input[type=email] {
 		background: $white;
 	}
+	label {
+		display: block;
+	}
 }
 
 .blicki__edit-details-editor {
 	margin-bottom: 1em;
 }
 
-.blicki__edit-details-field {
+.blicki__edit-details-field,
+.blicki__edit-details-submit {
 	padding: 0 1em 1em;
 
 	input[type=text],
 	input[type=email] {
-		width: 60%;
+		width: 100%;
 
 		@media all and ( max-width: 480px ) {
 			width: 100%;
 		}
 	}
+}
+
+.blicki__edit-details-editor,
+.blicki__edit-details-submit {
+	border-bottom: 1px solid darken( $gray-light, 10% );
+}
+
+.blicki__edit-details-submit {
+	border-top: 1px solid darken( $gray-light, 10% );
 }
 
 .blicki__edit-submit {
