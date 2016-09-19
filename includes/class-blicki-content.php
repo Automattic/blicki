@@ -14,7 +14,7 @@ class Blicki_Content {
     public function __construct() {
         add_action( 'wp_enqueue_scripts', array( $this, 'scripts' ) );
         add_filter( 'the_content', array( $this, 'wrap_wiki' ) );
-		add_filter( 'the_content', array( $this, 'add_internal_links' ) );
+		add_filter( 'the_content', array( $this, 'add_internal_links' ), 10, 2 );
     }
 
     /**
@@ -200,18 +200,15 @@ class Blicki_Content {
 	 * Add internal links to our content.
 	 * @todo add transient cache here in the future.
 	 */
-	public function add_internal_links( $content ) {
+	public function add_internal_links( $content, $post_id = 0 ) {
 		global $post;
 
-		if ( ! is_singular() ) {
-			return $content;
+		if ( ! $post_id ) {
+			$post_id = $post->ID;
 		}
 
-		$indexes = get_option( '_blicki_index', array() );
-		unset( $indexes[ $post->ID ] );
-
-		if ( $indexes ) {
-			$content = str_ireplace( wp_list_pluck( $indexes, 'post_title' ), wp_list_pluck( $indexes, 'post_link' ), $content );
+		if ( 'blicki' === get_post_type( $post_id ) && ( $indexes = array_diff_key( get_option( '_blicki_index', array() ), array( $post_id => '' ) ) ) ) {
+			$content = str_replace( wp_list_pluck( $indexes, 'post_title' ), wp_list_pluck( $indexes, 'post_link' ), $content );
 		}
 
 		return $content;
