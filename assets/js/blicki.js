@@ -69,6 +69,8 @@ jQuery(function( $ ) {
 			listItem.append(link);
 			list.append(listItem);
 		});
+		var contributorsLink = $( '<li><a href="#bcontributors">Contributors</a></li>');
+		list.append( contributorsLink );
 		toc_div.append( tocToggle, list );
 		post_div.prepend( toc_div )
 	});
