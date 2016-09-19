@@ -28,6 +28,15 @@ class Blicki_Notices {
         );
     }
 
+	public static function has_error() {
+		foreach ( self::$notices as $notice ) {
+			if ( 'error' === $notice->type ) {
+				return true;
+			}
+		}
+		return false;
+	}
+
     public static function display() {
         if ( ! empty( self::$notices ) ) {
             foreach ( self::$notices as $notice ) {

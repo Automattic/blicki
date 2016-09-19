@@ -23,21 +23,29 @@ class Blicki_Edit_Form {
 		// and it lets us construct the additional fields normally
 		ob_start();
 		$settings = array( 'media_buttons' => false, 'quicktags' => false, 'editor_height' => 400 );
+
+		$editor_content = $content;
+		// if we're here as a result of a post validation error
+		if ( Blicki_Notices::has_error() ) {
+			$editor_content = wp_kses_post( stripslashes( $_POST[  'blicki-editor-' . $id ] ) );
+			$submitted_email = esc_attr( $_POST[ 'blicki-email-' . $id ] );
+			$submitted_name = esc_attr( $_POST[ 'blicki-name-' . $id ] );
+		}
 		?>
 		<form class='blicki__edit' method='post'>
 			<div class='blicki__edit-details'>
 				<div class="blicki__edit-details-editor">
-					<?php wp_editor( $content, 'blicki-editor-' . $id, $settings ); ?>
+					<?php wp_editor( $editor_content, 'blicki-editor-' . $id, $settings ); ?>
 				</div>
 
 				<?php if ( ! is_user_logged_in() ) : ?>
 					<div class="blicki__edit-details-field">
 						<label for='name<?php echo esc_attr( $id ); ?>'><?php _e( 'Enter your name:', 'blicki' ); ?></label>
-						<input type='text' name='blicki-name-<?php echo esc_attr( $id ); ?>' required placeholder='Your Name' id='name<?php echo esc_attr( $id ); ?>' />
+						<input type='text' name='blicki-name-<?php echo esc_attr( $id ); ?>' required placeholder='Your Name' id='name<?php echo esc_attr( $id ); ?>' <?php echo ( isset( $submitted_name ) ? "value='" . $submitted_name . "'" : '' ); ?>/>
 					</div>
 					<div class="blicki__edit-details-field">
 						<label for='email<?php echo esc_attr( $id ); ?>'><?php _e( 'Enter your email address:', 'blicki' ); ?></label>
-						<input type='email' name='blicki-email-<?php echo esc_attr( $id ); ?>' required placeholder='email@example.com' id='email<?php echo esc_attr( $id ); ?>' />
+						<input type='email' name='blicki-email-<?php echo esc_attr( $id ); ?>' required placeholder='email@example.com' id='email<?php echo esc_attr( $id ); ?>' <?php echo ( isset( $submitted_email ) ? "value='" . $submitted_email . "'" : '' ); ?>/>
 					</div>
 				<?php endif; ?>
 
