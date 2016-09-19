@@ -180,7 +180,7 @@ class Blicki_Content {
                 if ( $revision->post_author ) {
                     $user     = get_user_by( 'id', $revision->post_author );
                     $username = $user->display_name;
-                    $avatar   = get_avatar_url( $user->email, '100' );
+                    $avatar   = get_avatar_url( $user->user_email, '100' );
                 } else {
                     $username = '';
                 }
