@@ -14,6 +14,7 @@ class Blicki_Content {
     public function __construct() {
         add_action( 'wp_enqueue_scripts', array( $this, 'scripts' ) );
         add_filter( 'the_content', array( $this, 'wrap_wiki' ) );
+		add_filter( 'the_content', array( $this, 'add_internal_links' ) );
     }
 
     /**
@@ -193,6 +194,27 @@ class Blicki_Content {
             echo '</ul>';
         }
 		return ob_get_clean();
+	}
+
+	/**
+	 * Add internal links to our content.
+	 * @todo add transient cache here in the future.
+	 */
+	public function add_internal_links( $content ) {
+		global $post;
+
+		if ( ! is_singular() ) {
+			return $content;
+		}
+
+		$indexes = get_option( '_blicki_index', array() );
+		unset( $indexes[ $post->ID ] );
+
+		if ( $indexes ) {
+			$content = str_ireplace( wp_list_pluck( $indexes, 'post_title' ), wp_list_pluck( $indexes, 'post_link' ), $content );
+		}
+
+		return $content;
 	}
 }
 new Blicki_Content();

@@ -14,6 +14,7 @@ class Blicki_CPT {
     public function __construct() {
         add_action( 'init', array( $this, 'register_post_types' ) );
 		add_filter( 'wp_revisions_to_keep', array( $this, 'revisions_to_keep' ), 10, 2 );
+		add_action( 'save_post', array( $this, 'update_index' ) );
     }
 
     /**
@@ -113,13 +114,45 @@ class Blicki_CPT {
         );*/
     }
 
+	/**
+	 * Make sure we always keep all revisions for our post type
+	 * @param  int $num
+	 * @param  object $post
+	 * @return int
+	 */
 	public function revisions_to_keep ( $num, $post ) {
 		if ( 'blicki' === $post->post_type ) {
-			// make sure we always keep all revisions for our post type
 			return -1;
 		}
-
 		return $num;
+	}
+
+	/**
+	 * When a post is saved, and it's a blicki, update our index of titles/post ids.
+	 * The index is used to add links to entries automagically.
+	 */
+	public function update_index( $post_id ) {
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+            return false;
+        }
+        if ( ! $post = get_post( $post_id ) ) {
+            return false;
+        }
+        if ( 'blicki' !== $post->post_type ) {
+            return false;
+        }
+        $blicki_index = get_option( '_blicki_index', array() );
+
+		if ( 'publish' === $post->post_status ) {
+			$blicki_index[ $post->ID ] = array(
+				'post_title' => $post->post_title,
+				'post_link'  => '<a href="' . esc_url( get_permalink( $post->ID ) ) . '">' . esc_html( $post->post_title ) . '</a>',
+			);
+		} else {
+			unset( $blicki_index[ $post->ID ] );
+		}
+
+		update_option( '_blicki_index', $blicki_index );
 	}
 }
 new Blicki_CPT();
