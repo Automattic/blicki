@@ -1,12 +1,11 @@
 .blicki__toc-container {
 	background: rgba( #000, 0.05 );
-	float: right;
-	margin: 1em 0 2em 2em;
+	margin: 1em 0;
 	padding: 1em;
-	width: 250px;
-	max-width: 100%;
+	width: 100%;
 
 	ol {
+		display: none;
 		margin: 1em 0 0;
 	}
 

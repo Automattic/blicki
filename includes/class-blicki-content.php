@@ -38,12 +38,12 @@ class Blicki_Content {
 		$contributors = Blicki_Suggestion::get_contributors_for_entry( $entry_id );
 
 		if ( $contributors ) {
-			$html .= '<div class="blicky-contributors"><ol>';
+			$html .= '<hr><div class="blicki__contributors"><h4 id="bcontributors">Contributors</h4><ol class="blicki__contributors-list">';
 			foreach ( $contributors as $contributor ) {
-				$html .= '<li class="blicky-contributors-user">';
+				$html .= '<li class="blicki__contributors-user">';
 				$html .= get_avatar( $contributor->email, '100' );
-				$html .= '<div class="blicky-contributors-user-name">' . esc_html( $contributor->name ) . '</div>';
-				$html .= '<div class="blicky-contributors-user-count">' . sprintf( _n( '%d contribution', '%d contributions', $contributor->count, 'blicki' ), $contributor->count ) . '</div>';
+				$html .= '<div class="blicki__contributors-user-name">' . esc_html( $contributor->name );
+				$html .= '<div class="blicki__contributors-user-count">' . sprintf( _n( '%d contribution', '%d contributions', $contributor->count, 'blicki' ), $contributor->count ) . '</div></div>';
 				$html .= '</li>';
 			}
 			$html .= '</ol></div>';

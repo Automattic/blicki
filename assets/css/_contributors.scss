@@ -1,0 +1,36 @@
+.blicki__contributors-list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	font-size: 0.9em;
+}
+
+.blicki__contributors-user {
+	display: inline-block;
+	margin: 0 1em 1em 0;
+	padding-right: .5em;
+	width: calc(33.33% - 2em/3);
+
+	img,
+	.blicki__contributors-user-name {
+		display: inline-block;
+		vertical-align: middle;
+	}
+
+	img {
+		padding-right: .5em;
+		width: 33%;
+	}
+
+	.blicki__contributors-user-name {
+		margin: 0;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
+		width: 66.66%;
+	}
+
+	@media screen and ( max-width: 680px ) {
+		width: calc(50% - 1em);
+	}
+}
