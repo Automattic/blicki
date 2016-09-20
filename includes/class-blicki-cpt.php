@@ -15,6 +15,7 @@ class Blicki_CPT {
         add_action( 'init', array( $this, 'register_post_types' ) );
 		add_filter( 'wp_revisions_to_keep', array( $this, 'revisions_to_keep' ), 10, 2 );
 		add_action( 'save_post', array( $this, 'update_index' ) );
+		add_action( 'post_updated', array( $this, 'create_revision_and_log' ), 5 );
 		add_filter( 'manage_blicki_posts_columns', array( $this, 'columns_to_show' ) );
 		add_filter( 'manage_edit-blicki_sortable_columns', array( $this, 'columns_to_sort' ) );
 		add_action( 'manage_blicki_posts_custom_column', array( $this, 'data_for_column' ), 10, 2 );
@@ -186,6 +187,21 @@ class Blicki_CPT {
 			case 'topics':
 				the_terms( $post_id, 'blicki_topics' );
 				break;
+		}
+	}
+
+	/**
+	 * Log an edit by a user.
+	 */
+	public function create_revision_and_log( $post_id ) {
+		if ( 'blicki' !== get_post_type( $post_id ) || ! get_current_user_id() ) {
+			return false;
+		}
+		if ( ( $revision_id = wp_save_post_revision( $post_id ) ) && ! is_wp_error( $revision_id ) ) {
+			Blicki_History::log_event( $post_id, 'updated', array(
+				'user_id'     => get_current_user_id(),
+				'revision_id' => $revision_id,
+			) );
 		}
 	}
 }
