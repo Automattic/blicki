@@ -126,6 +126,9 @@ class Blicki_Diff_Viewer {
 		<?php
 	}
 
+	/**
+	 * Maybe merge a revision into the entry.
+	 */
 	public function maybe_merge_content( $content, $post_id ) {
 		if ( isset( $_GET['merge_from'] ) && 0 !== absint( $_GET['merge_from'] ) ) {
 			$post = get_post( $post_id );
