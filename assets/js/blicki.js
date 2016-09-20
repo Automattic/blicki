@@ -59,6 +59,17 @@ jQuery(function( $ ) {
 			return;
 		}
 
+		// use the highest level heading as the 'base' level 1 indent
+		var min_level = 0;
+		headings.forEach( function( elem ) {
+			if ( 0 === min_level || elem.level < min_level ) {
+				min_level = elem.level;
+			}
+		});
+		headings.forEach( function( elem, idx ) {
+			headings[idx].level = elem.level - min_level + 1;
+		});
+
 		var toc_div = $( '<div class="blicki__toc-container"><strong>' + blicki_js_params.toc + '</strong></div>' );
 		var tocToggle = $( '<a href="javascript:;" class="blicki__toc-toggle">Show</a>' );
 		var list = $( '<ol class="blicki__toc"></ol></div>' );
