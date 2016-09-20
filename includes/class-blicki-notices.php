@@ -90,7 +90,7 @@ class Blicki_Notices {
 
 		if ( $num > 0 ) {
 			foreach ( $menu as $prio => $menu_item ) {
-				if ( 'Wiki' === $menu_item[0] ) {
+				if ( 'Blicki' === $menu_item[0] ) {
 					$menu[$prio][0] .= " <span class='update-plugins count-" . $num . "'><span class='plugin-count'>" . $num . "</span></span>";
 					break;
 				}
