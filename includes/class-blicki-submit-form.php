@@ -21,12 +21,11 @@ class Blicki_Submit_Form {
 	 */
 	public static function submission_form() {
         Blicki_Notices::display();
-		$settings = array( 'media_buttons' => false, 'quicktags' => false, 'editor_height' => 400 );
 		?>
 		<form class='blicki__edit' method='post'>
 			<div class='blicki__edit-details'>
 				<div class="blicki__edit-details-editor">
-					<?php wp_editor( '', 'blicki-editor', $settings ); ?>
+					<?php blicki_editor(); ?>
 				</div>
 
                 <div class="blicki__edit-details-field">

@@ -66,6 +66,7 @@ class Blicki {
 		include_once( BLICKI_DIR . 'includes/class-blicki-content.php' );
 		include_once( BLICKI_DIR . 'includes/class-blicki-shortcodes.php' );
 		include_once( BLICKI_DIR . 'includes/class-blicki-history.php' );
+		include_once( BLICKI_DIR . 'includes/blicki-core-functions.php' );
     }
 
 	/**

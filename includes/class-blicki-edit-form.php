@@ -22,20 +22,19 @@ class Blicki_Edit_Form {
 		// use an output buffer here because of wp_editor
 		// and it lets us construct the additional fields normally
 		ob_start();
-		$settings = array( 'media_buttons' => false, 'quicktags' => false, 'editor_height' => 400 );
-
 		$editor_content = $content;
+
 		// if we're here as a result of a post validation error
 		if ( Blicki_Notices::has_error() ) {
-			$editor_content = wp_kses_post( stripslashes( $_POST[  'blicki-editor-' . $id ] ) );
+			$editor_content  = wp_kses_post( stripslashes( $_POST[  'blicki-editor-' . $id ] ) );
 			$submitted_email = esc_attr( $_POST[ 'blicki-email-' . $id ] );
-			$submitted_name = esc_attr( $_POST[ 'blicki-name-' . $id ] );
+			$submitted_name  = esc_attr( $_POST[ 'blicki-name-' . $id ] );
 		}
 		?>
 		<form class='blicki__edit' method='post'>
 			<div class='blicki__edit-details'>
 				<div class="blicki__edit-details-editor">
-					<?php wp_editor( $editor_content, 'blicki-editor-' . $id, $settings ); ?>
+					<?php blicki_editor( $editor_content, 'blicki-editor-' . $id ); ?>
 				</div>
 
 				<?php if ( ! is_user_logged_in() ) : ?>
