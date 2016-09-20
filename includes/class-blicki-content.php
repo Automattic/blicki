@@ -171,23 +171,29 @@ class Blicki_Content {
 			$prev_revision_id = 0;
             foreach ( array_reverse( $events ) as $event ) {
 				$date = date_i18n( get_option( 'date_format' ), strtotime( $event->event_timestamp ) );
-				$username_contributer = $event->user_name;
-				$avatar_contributer = get_avatar_url( $event->user_email, '100' );
 
-				if ( 'updated' === $event->event ) {
+				if ( ! empty( $event->user_id ) ) {
+					$user = get_user_by( 'id', $event->user_id );
+					$username = $user->display_name;
+					$avatar = get_avatar_url( $user->user_email, '100' );
+				} else {
+					$username = $event->user_name;
+					$avatar = get_avatar_url( $event->user_email, '100' );
+				}
+
+				if ( ! empty( $event->revision_id ) ) {
 					$revision_id = $event->revision_id;
 					$revision = get_post( $revision_id );
 
-					$user = get_user_by( 'id', $event->user_id );
-					$username_approver = $user->display_name;
-
 					$revisions_url = add_query_arg( array( 'source' => $prev_revision_id, 'revision' => $revision_id ), get_permalink( $id ) );
-
-					echo '<li class="blicki__revision-list-item"><div class="blicki__revision-info"><img class="blicki__revision-avatar" src="' . $avatar_contributer . '" />' . sprintf( esc_html_x( 'Suggestion by %s approved by %s on %s', 'Revision by user approved by user on date', 'blicki' ), '<strong>' . esc_html( $username_contributer ) . '</strong>', esc_html( $username_approver ), esc_html( $date ) ) . '</div><a class="blicki__revision-link" href="' . esc_url( $revisions_url ) . '">' . esc_html__( 'Show diff', 'blicki' ) . '</a></li>';
-
 					$prev_revision_id = $revision_id;
-				} else if ( 'submitted' === $event->event || 'contributed' === $event->event ) {
-					echo '<li class="blicki__revision-list-item"><div class="blicki__revision-info"><img class="blicki__revision-avatar" src="' . $avatar_contributer . '" />' . sprintf( esc_html_x( '%s by %s on %s', 'Revision by user on date', 'blicki' ), esc_html( ucwords( $event->event ) ), '<strong>' . esc_html( $username_contributer ) . '</strong>', esc_html( $date ) ) . '</div></li>';
+				} else {
+					$revisions_url = null;
+				}
+
+				echo '<li class="blicki__revision-list-item"><div class="blicki__revision-info"><img class="blicki__revision-avatar" src="' . $avatar . '" />' . sprintf( esc_html_x( '%s by %s on %s', 'Revision by user on date', 'blicki' ), esc_html( Blicki_History::get_event_display_name( $event->event ) ), '<strong>' . esc_html( $username ) . '</strong>', esc_html( $date ) ) . '</div>';
+				if ( ! empty( $revisions_url ) ) {
+					echo '<a class="blicki__revision-link" href="' . esc_url( $revisions_url ) . '">' . esc_html__( 'Show diff', 'blicki' ) . '</a></li>';
 				}
             }
             echo '</ul>';

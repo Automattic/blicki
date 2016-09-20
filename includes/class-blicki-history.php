@@ -18,6 +18,7 @@ class Blicki_History {
         'contributed',
     );
 
+
     /**
      * Log event for entry.
      */
@@ -73,4 +74,18 @@ class Blicki_History {
 
         return $wpdb->get_results( $query );
     }
+
+	public static function get_event_display_name( $type ) {
+		$event_display_names = array(
+			'submitted' => __( 'Submitted', 'blicki' ),
+			'updated' => __( 'Updated', 'blicki' ),
+			'contributed' => __( 'Contributed', 'blicki'),
+		);
+
+		if ( ! isset( $event_display_names[ $type ] ) ) {
+			return __( 'Modified', 'blicki' );
+		}
+
+		return $event_display_names[ $type ];
+	}
 }
