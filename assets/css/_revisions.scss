@@ -34,3 +34,16 @@
 	margin-right: 5px;
 	width: 18px;
 }
+
+// diff viewer
+.blicki_page_blicki-show-diff,
+.type-blicki {
+	.diff-title {
+		display: block;
+	}
+
+	.diff-sub-title td:nth-child(1n+0),
+	tbody td:nth-child(2) {
+		display: none;
+	}
+}
