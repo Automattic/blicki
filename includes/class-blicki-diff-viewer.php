@@ -100,7 +100,6 @@ class Blicki_Diff_Viewer {
 		// get posts, call wp_text_diff
 		$source          = get_post( $source_id );
 		$suggestion      = get_post( $suggestion_id );
-		$contributor     = Blicki_Suggestion::get_contributor_for_post( $suggestion_id );
 		$nonce_name      = 'moderate-post-' . $source_id . '-' . $suggestion_id;
 		$original_date   = date_i18n( get_option( 'date_format' ), strtotime( $source->post_date ) );
 		$suggestion_date = date_i18n( get_option( 'date_format' ), strtotime( $suggestion->post_date ) );
@@ -114,7 +113,7 @@ class Blicki_Diff_Viewer {
 		);
 		?>
 		<div class="wrap">
-			<h1><?php printf( __( 'Merging suggested changes from %s into &ldquo;%s&rdquo;', 'blicki' ), esc_html( $contributor->name ), '<a href="' . get_edit_post_link( $source_id ) . '">' . esc_html( $source->post_title ) . '</a>' ); ?></h1>
+			<h1><?php printf( __( 'Merging suggested changes into &ldquo;%s&rdquo;', 'blicki' ), '<a href="' . get_edit_post_link( $source_id ) . '">' . esc_html( $source->post_title ) . '</a>' ); ?></h1>
 
 			<div style="margin: 1em 0; padding: 10px; overflow: hidden; background: #fbfbfb; line-height: 30px;">
 				<a href="<?php echo wp_nonce_url( add_query_arg( 'action', 'approve' ), $nonce_name ); ?>" class="button button-large button-primary"><?php _e( 'Approve Suggestion', 'blicki' ); ?></a>

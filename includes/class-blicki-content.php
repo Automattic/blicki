@@ -35,7 +35,7 @@ class Blicki_Content {
 	 */
 	public function get_contributors_html( $entry_id ) {
 		$html         = '';
-		$contributors = Blicki_Suggestion::get_contributors_for_entry( $entry_id );
+		$contributors = $this->get_contributors_for_entry( $entry_id );
 
 		if ( $contributors ) {
 			$html .= '<hr><div class="blicki__contributors"><h4 id="bcontributors">Contributors</h4><ol class="blicki__contributors-list">';
@@ -111,7 +111,7 @@ class Blicki_Content {
 				<div class='blicki__header'>
 					<div class='blicki__latest'>
 						<?php
-							$last_contributor = Blicki_Suggestion::get_last_contributor_for_entry( $post->ID );
+							$last_contributor = $this->get_last_contributor_for_entry( $post->ID );
 							printf(
 								__( 'Last updated <time datetime="%s">%s</time> by <strong>%s</strong>', 'blicki' ),
 								date( 'Y-m-d H:i:s', strtotime( $post->post_modified ) ),
@@ -260,6 +260,108 @@ class Blicki_Content {
 		}
 
 		return $content;
+	}
+
+	/**
+     * Get IDs of suggestions for an entry.
+     * @param  int $id
+     */
+	public function get_last_contributor_for_entry( $id ) {
+        $events = Blicki_History::get_events( $id );
+
+		if ( $events ) {
+			$contributor = $this->get_contributor_from_event( $events[0] );
+		} else {
+			$post        = get_post( $id );
+			$user        = get_user_by( 'id', $post->post_author );
+			$contributor = (object) array(
+				'id'    => $user->user_id,
+				'email' => $user->user_email,
+				'name'  => $user->display_name,
+				'count' => 1,
+			);
+		}
+		return $contributor;
+    }
+
+	/**
+	 * Get contributor data.
+	 * @return array
+	 */
+	private function get_contributor_from_event( $event ) {
+		if ( $event->user_id ) {
+			$user  = get_user_by( 'id', $event->user_id );
+			$id    = $event->user_id;
+			$email = $user->user_email;
+			$name  = $user->display_name;
+		} else {
+			$id    = $event->user_email;
+			$email = $event->user_email;
+			$name  = $event->user_name;
+		}
+		return (object) array(
+			'id'    => $event->user_id,
+			'email' => $email,
+			'name'  => $name,
+			'count' => 1,
+		);
+	}
+
+	/**
+	 * Get a list of contributors to a wiki entry.
+	 * @param  int $entry_id
+	 * @return array
+	 */
+	public function get_contributors_for_entry( $entry_id ) {
+		$contributors = array();
+		$events       = Blicki_History::get_events( $entry_id );
+		foreach ( $events as $event ) {
+			$contributor = $this->get_contributor_from_event( $event );
+			if ( isset( $contributors[ $contributor->id ] ) ) {
+				$contributors[ $contributor->id ]->count ++;
+			} else {
+				$contributors[ $contributor->id ] = $contributor;
+			}
+		}
+		uasort( $contributors, array( $this, 'sort_by_count' ) );
+		return array_reverse( $contributors );
+	}
+
+	/**
+	 * Sort by count.
+	 */
+	private function sort_by_count( $a, $b ) {
+		if ( $a->count === $b->count ) {
+			return 0;
+		}
+		return ( $a->count < $b->count ) ? -1 : 1;
+	}
+
+	/**
+	 * Get contributor data.
+	 * @param  int $id
+	 * @return object
+	 */
+	public static function get_contributor_for_post( $id ) {
+		$post = get_post( $id );
+
+		if ( $post->post_author > 0 ) {
+			$user        = get_user_by( 'id', $post->post_author );
+			$contributor = (object) array(
+				'id'    => $user->ID,
+				'email' => $user->user_email,
+				'name'  => $user->display_name,
+			);
+		} else {
+			$email       = get_post_meta( $id, '_blicki_author_email', true );
+			$name        = get_post_meta( $id, '_blicki_author_name', true );
+			$contributor = (object) array(
+				'id'    => $email,
+				'email' => $email,
+				'name'  => $name,
+			);
+		}
+		return $contributor;
 	}
 }
 new Blicki_Content();

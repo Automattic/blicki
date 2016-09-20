@@ -77,9 +77,9 @@ class Blicki_History {
 
 	public static function get_event_display_name( $type ) {
 		$event_display_names = array(
-			'submitted' => __( 'Submitted', 'blicki' ),
-			'updated' => __( 'Updated', 'blicki' ),
-			'contributed' => __( 'Contributed', 'blicki'),
+			'submitted'   => __( 'Submitted by', 'blicki' ),
+			'updated'     => __( 'Updated by', 'blicki' ),
+			'contributed' => __( 'Contribution from', 'blicki'),
 		);
 
 		if ( ! isset( $event_display_names[ $type ] ) ) {

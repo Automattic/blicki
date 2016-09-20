@@ -165,13 +165,13 @@ class Blicki_Suggestion {
      * Add meta boxes.
      */
     public function add_meta_boxes() {
-        add_meta_box( 'blicki-suggestions', __( 'Blicki Suggestions', 'blicki' ), array( $this, 'blick_suggestions_content' ), 'blicki', 'side', 'high' );
+        add_meta_box( 'blicki-suggestions', __( 'Blicki Suggestions', 'blicki' ), array( $this, 'blicki_suggestions_content' ), 'blicki', 'side', 'high' );
     }
 
     /**
      * Show suggestions when editing a wiki entry.
      */
-    public function blick_suggestions_content() {
+    public function blicki_suggestions_content() {
         global $post;
 
 		if ( ! class_exists( 'WP_Text_Diff_Renderer_Table', false ) ) {
@@ -186,7 +186,7 @@ class Blicki_Suggestion {
             foreach ( $suggestions as $suggestion_id ) {
 				$suggestion  = get_post( $suggestion_id );
 				$date        = date_i18n( get_option( 'date_format' ), strtotime( $suggestion->post_date ) );
-				$contributor = self::get_contributor_for_post( $suggestion_id );
+				$contributor = Blicki_Content::get_contributor_for_post( $suggestion_id );
 				$text_diff = new Text_Diff( explode( "\n", $post->post_content ), explode( "\n", $suggestion->post_content ) );
 
                 echo
@@ -227,97 +227,5 @@ class Blicki_Suggestion {
             'post_status'    => $status,
         ) );
     }
-
-	/**
-	 * Get contributor data.
-	 * @param  int $suggestion_id
-	 * @return object
-	 */
-	public static function get_contributor_for_post( $suggestion_id ) {
-		$suggestion = get_post( $suggestion_id );
-
-		if ( $suggestion->post_author > 0 ) {
-			$user        = get_user_by( 'id', $suggestion->post_author );
-			$contributor = (object) array(
-				'id'    => $user->ID,
-				'email' => $user->user_email,
-				'name'  => $user->display_name,
-			);
-		} else {
-			$email       = get_post_meta( $suggestion_id, '_blicki_author_email', true );
-			$name        = get_post_meta( $suggestion_id, '_blicki_author_name', true );
-			$contributor = (object) array(
-				'id'    => $email,
-				'email' => $email,
-				'name'  => $name,
-			);
-		}
-		return $contributor;
-	}
-
-	/**
-     * Get IDs of suggestions for an entry.
-     * @param  int $id
-     * @return int[]
-     */
-	public static function get_last_contributor_for_entry( $id ) {
-        $last = get_posts( array(
-            'fields'         => 'ids',
-			'post_type'      => 'blicki-suggestion',
-            'post_parent'    => $id,
-            'posts_per_page' => 1,
-            'post_status'    => 'approved',
-        ) );
-		if ( $last ) {
-			$contributor = self::get_contributor_for_post( $last );
-		} else {
-			$entry = get_post( $id );
-			$user  = get_user_by( 'id', $entry->post_author );
-			$contributor = (object) array(
-				'id'    => $user->ID,
-				'email' => $user->user_email,
-				'name'  => $user->display_name,
-			);
-		}
-		return $contributor;
-    }
-
-	/**
-	 * Sort by count.
-	 */
-	private static function sort_by_count( $a, $b ) {
-		if ( $a->count === $b->count ) {
-        	return 0;
-    	}
-    	return ( $a->count < $b->count ) ? -1 : 1;
-	}
-
-	/**
-	 * Get a list of contributors to a wiki entry.
-	 * @param  int $entry_id
-	 * @return array
-	 */
-	public static function get_contributors_for_entry( $entry_id ) {
-		$contributors = array();
-
-		// Original author
-		$contributor = self::get_contributor_for_post( $entry_id );
-		$contributors[ $contributor->id ] = $contributor;
-		$contributors[ $contributor->id ]->count = sizeof( wp_get_post_revisions( $entry_id ) );
-
-		// Contributors from suggstions
-		foreach ( self::get_suggestions_for_entry( $entry_id, 'approved' ) as $suggestion_id ) {
-			$contributor = self::get_contributor_for_post( $suggestion_id );
-
-			if ( isset( $contributors[ $contributor->id ] ) ) {
-				$contributors[ $contributor->id ]->count ++;
-			} else {
-				$contributors[ $contributor->id ] = $contributor;
-				$contributors[ $contributor->id ]->count = 1;
-			}
-		}
-		uasort( $contributors, array( __CLASS__, 'sort_by_count' ) );
-		return array_reverse( $contributors );
-	}
 }
 new Blicki_Suggestion();
