@@ -69,7 +69,7 @@ jQuery(function( $ ) {
 			listItem.append(link);
 			list.append(listItem);
 		});
-		var contributorsLink = $( '<li><a href="#bcontributors">Contributors</a></li>');
+		var contributorsLink = $( '<li><a href="#bcontributors">' + blicki_js_params.contributors + '</a></li>');
 		list.append( contributorsLink );
 		toc_div.append( tocToggle, list );
 		post_div.prepend( toc_div )

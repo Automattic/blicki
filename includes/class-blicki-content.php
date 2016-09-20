@@ -25,6 +25,7 @@ class Blicki_Content {
 		wp_enqueue_style( 'blicki_css', plugins_url( 'assets/css/blicki.css', BLICKI_FILE ), array( 'revisions' ) );
 		wp_localize_script( 'blicki_js', 'blicki_js_params', array(
 			'toc' => __( 'Table of Contents', 'blicki' ),
+			'contributors' => __( 'Contributors', 'blicki' ),
 		) );
     }
 
