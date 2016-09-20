@@ -69,7 +69,7 @@ class Blicki_Notices {
 					$num,
 					'blicki' ),
 				$num );
-				echo " - <a href='" . admin_url( 'edit.php?post_type=blicki&orderby=pending_suggestions&order=desc' ) . "'>" . __( 'Entries', 'blicki' ) . "</a>";
+				echo " - <a href='" . admin_url( 'edit.php?post_type=blicki' ) . "'>" . __( 'Entries', 'blicki' ) . "</a>";
 				?>
 			</p></div>
 			<?php

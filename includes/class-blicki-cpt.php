@@ -17,7 +17,7 @@ class Blicki_CPT {
 		add_action( 'save_post', array( $this, 'update_index' ) );
 		add_action( 'post_updated', array( $this, 'create_revision_and_log' ), 5 );
 		add_filter( 'manage_blicki_posts_columns', array( $this, 'columns_to_show' ) );
-		add_filter( 'manage_edit-blicki_sortable_columns', array( $this, 'columns_to_sort' ) );
+		// add_filter( 'manage_edit-blicki_sortable_columns', array( $this, 'columns_to_sort' ) );
 		add_action( 'manage_blicki_posts_custom_column', array( $this, 'data_for_column' ), 10, 2 );
     }
 
@@ -168,6 +168,7 @@ class Blicki_CPT {
 
 	public function columns_to_sort( $columns ) {
 		// topics are not sortable yet, and might not need to be
+		// TODO need to do lots of magic SQL to actually make these sortable
 		return array_merge( $columns, array(
 			'pending_suggestions' => 'pending_suggestions',
 			'approved_suggestions' => 'approved_suggestions'
