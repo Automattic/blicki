@@ -33,6 +33,10 @@ class Blicki_History {
 				'event_timestamp' => time(),
             ) );
 
+			if ( empty( $data['user_id'] ) && ( empty( $data['user_email'] ) || empty( $data['user_name'] ) ) ) {
+				return;
+			}
+
             $wpdb->insert(
                 $wpdb->prefix . 'blicky_history',
                 array(
