@@ -28,14 +28,14 @@ class Blicki_CPT {
         if ( post_type_exists( 'blicki' ) ) {
             return;
         }
-        $singular = __( 'Entry', 'blicki' );
-        $plural   = __( 'Entries', 'blicki' );
+        $singular = __( 'Wiki Entry', 'blicki' );
+        $plural   = __( 'Wiki Entries', 'blicki' );
         register_post_type( 'blicki',
             apply_filters( 'register_post_type_blicki', array(
                 'labels' => array(
                     'name'               => $plural,
                     'singular_name'      => $singular,
-                    'menu_name'          => __( 'Wiki', 'blicki' ),
+                    'menu_name'          => __( 'Blicki', 'blicki' ),
                     'all_items'          => sprintf( __( 'All %s', 'blicki' ), $plural ),
                     'add_new'            => __( 'Add New', 'blicki' ),
                     'add_new_item'       => sprintf( __( 'Add %s', 'blicki' ), $singular ),
