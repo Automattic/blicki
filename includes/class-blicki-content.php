@@ -13,6 +13,7 @@ class Blicki_Content {
      */
     public function __construct() {
         add_action( 'wp_enqueue_scripts', array( $this, 'scripts' ) );
+        add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ) );
         add_filter( 'the_content', array( $this, 'wrap_wiki' ), 20 );
 		add_filter( 'the_content', array( $this, 'add_internal_links' ), 10, 2 );
     }
@@ -27,6 +28,10 @@ class Blicki_Content {
 			'toc' => __( 'Table of Contents', 'blicki' ),
 			'contributors' => __( 'Contributors', 'blicki' ),
 		) );
+    }
+
+    public function admin_scripts() {
+		wp_enqueue_style( 'blicki_css', plugins_url( 'assets/css/blicki.css', BLICKI_FILE ), array( 'revisions' ) );
     }
 
 	/**
