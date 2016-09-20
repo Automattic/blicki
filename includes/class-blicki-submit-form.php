@@ -79,7 +79,7 @@ class Blicki_Submit_Form {
 			}
 
             $title   = sanitize_text_field( $_POST['blicki-title'] );
-            $content = wp_kses_post( $_POST['blicki-editor'] );
+            $content = wp_kses_post( trim( stripslashes( $_POST['blicki-editor'] ) ) );
 
 			// Check name is valid.
             if ( ! $post_author && empty( $name ) ) {

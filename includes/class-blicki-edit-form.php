@@ -109,7 +109,7 @@ class Blicki_Edit_Form {
 				$post_author = 0;
 			}
 
-            $content = wp_kses_post( $_POST[  'blicki-editor-' . $entry_id ] );
+            $content = wp_kses_post( trim( stripslashes( $_POST[  'blicki-editor-' . $entry_id ] ) ) );
 
 			// Check name is valid.
             if ( ! $post_author && empty( $name ) ) {

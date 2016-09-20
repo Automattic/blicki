@@ -102,7 +102,7 @@ class Blicki_Content {
 
             } else {
 				// add editor
-				$editor = Blicki_Edit_Form::get_edit_form( $content, $post->ID );
+				$editor = Blicki_Edit_Form::get_edit_form( $post->post_content, $post->ID );
 
 				// grab revision history
 				$revisions = $this->get_revision_history( $post->ID );

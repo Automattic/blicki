@@ -191,7 +191,7 @@ class Blicki_Suggestion {
 
                 echo
 					'<li class="blicki-suggestion-list-item">',
-					sprintf( esc_html_x( 'Suggestion by %s on %s', 'Suggestion by user on date', 'blicki' ), '<strong>' . esc_url( $contributor->name ) . '</strong>', $date ),
+					sprintf( esc_html_x( 'Suggestion by %s on %s', 'Suggestion by user on date', 'blicki' ), '<strong>' . esc_html( $contributor->name ) . '</strong>', $date ),
 					'<br/><a href="' . esc_url( $this->get_diff_viewer_url( $post_id, $suggestion_id ) ) . '" title="' . esc_html__( 'Show diff', 'blicki' ) . '">',
 					sprintf( esc_html_x( '%d changes', 'X changes', 'blicki' ), sizeof( $text_diff->_edits ) ),
 					'</a>',
