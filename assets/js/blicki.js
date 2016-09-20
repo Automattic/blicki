@@ -27,6 +27,12 @@ jQuery(function( $ ) {
 		}
 	} );
 
+	$( document ).on( 'click', 'ol.blicki__toc a', function( e ) {
+		e.preventDefault();
+		var heading = $( this ).attr( 'href' );
+		$( 'body' ).animate({ scrollTop: $( heading ).offset().top }, 500);
+	} );
+
 	$( '.blicky-entry-content' ).each( function() {
 		var post_div = $( this );
 		var headings = [];
