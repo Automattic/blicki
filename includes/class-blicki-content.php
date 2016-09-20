@@ -163,7 +163,8 @@ class Blicki_Content {
 	 */
 	private function get_revision_history( $id ) {
 		ob_start();
-		$events = Blicki_History::get_events( $id );
+		$events  = Blicki_History::get_events( $id );
+		$history = array();
 
         if ( $events ) {
 			echo '<div class="blicki__revision-heading">Revision History</div>';
@@ -188,16 +189,19 @@ class Blicki_Content {
 
 					if ( 0 !== $prev_revision_id ) {
 						// don't show the first diff, nothing to diff against
-						$revisions_url = add_query_arg( array( 'source' => $revision_id, 'revision' => $prev_revision_id ), get_permalink( $id ) );
+						$revisions_url = add_query_arg( array( 'source' => $prev_revision_id, 'revision' => $revision_id ), get_permalink( $id ) );
 					}
 					$prev_revision_id = $revision_id;
 				}
 
-				echo '<li class="blicki__revision-list-item"><div class="blicki__revision-info"><img class="blicki__revision-avatar" src="' . $avatar . '" />' . sprintf( esc_html_x( '%s by %s on %s', 'Revision by user on date', 'blicki' ), esc_html( Blicki_History::get_event_display_name( $event->event ) ), '<strong>' . esc_html( $username ) . '</strong>', esc_html( $date ) ) . '</div>';
+				$html = '<li class="blicki__revision-list-item"><div class="blicki__revision-info"><img class="blicki__revision-avatar" src="' . $avatar . '" />' . sprintf( esc_html_x( '%s by %s on %s', 'Revision by user on date', 'blicki' ), esc_html( Blicki_History::get_event_display_name( $event->event ) ), '<strong>' . esc_html( $username ) . '</strong>', esc_html( $date ) ) . '</div>';
 				if ( ! empty( $revisions_url ) ) {
-					echo '<a class="blicki__revision-link" href="' . esc_url( $revisions_url ) . '">' . esc_html__( 'Show diff', 'blicki' ) . '</a></li>';
+					$html .= '<a class="blicki__revision-link" href="' . esc_url( $revisions_url ) . '">' . esc_html__( 'Show diff', 'blicki' ) . '</a>';
 				}
+				$html .= '</li>';
+				$history[] = $html;
             }
+			echo implode( '', array_reverse( $history ) );
             echo '</ul>';
         }
 		return ob_get_clean();

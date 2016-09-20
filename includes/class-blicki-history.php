@@ -61,12 +61,12 @@ class Blicki_History {
 
         if ( 'all' === $type ) {
             $query = $wpdb->prepare(
-                "SELECT * FROM {$wpdb->prefix}blicky_history WHERE entry_id = %d",
+                "SELECT * FROM {$wpdb->prefix}blicky_history WHERE entry_id = %d ORDER BY event_timestamp DESC",
                 $entry_id
             );
         } else {
             $query = $wpdb->prepare(
-                "SELECT * FROM {$wpdb->prefix}blicky_history WHERE entry_id = %d AND event = %s",
+                "SELECT * FROM {$wpdb->prefix}blicky_history WHERE entry_id = %d AND event = %s ORDER BY event_timestamp DESC",
                 $entry_id,
                 $type
             );
