@@ -194,7 +194,7 @@ class Blicki_Content {
 					$prev_revision_id = $revision_id;
 				}
 
-				$html = '<li class="blicki__revision-list-item"><div class="blicki__revision-info"><img class="blicki__revision-avatar" src="' . $avatar . '" />' . sprintf( esc_html_x( '%s by %s on %s', 'Revision by user on date', 'blicki' ), esc_html( Blicki_History::get_event_display_name( $event->event ) ), '<strong>' . esc_html( $username ) . '</strong>', esc_html( $date ) ) . '</div>';
+				$html = '<li class="blicki__revision-list-item"><div class="blicki__revision-info"><img class="blicki__revision-avatar" src="' . $avatar . '" />' . sprintf( esc_html_x( '%s %s on %s', 'Revision by user on date', 'blicki' ), esc_html( Blicki_History::get_event_display_name( $event->event ) ), '<strong>' . esc_html( $username ) . '</strong>', esc_html( $date ) ) . '</div>';
 				if ( ! empty( $revisions_url ) ) {
 					$html .= '<a class="blicki__revision-link" href="' . esc_url( $revisions_url ) . '">' . esc_html__( 'Show diff', 'blicki' ) . '</a>';
 				}

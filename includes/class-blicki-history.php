@@ -83,7 +83,7 @@ class Blicki_History {
 		);
 
 		if ( ! isset( $event_display_names[ $type ] ) ) {
-			return __( 'Modified', 'blicki' );
+			return __( 'Modified by', 'blicki' );
 		}
 
 		return $event_display_names[ $type ];
