@@ -181,14 +181,16 @@ class Blicki_Content {
 					$avatar = get_avatar_url( $event->user_email, '100' );
 				}
 
+				$revisions_url = null;
 				if ( ! empty( $event->revision_id ) ) {
 					$revision_id = $event->revision_id;
 					$revision = get_post( $revision_id );
 
-					$revisions_url = add_query_arg( array( 'source' => $prev_revision_id, 'revision' => $revision_id ), get_permalink( $id ) );
+					if ( 0 !== $prev_revision_id ) {
+						// don't show the first diff, nothing to diff against
+						$revisions_url = add_query_arg( array( 'source' => $revision_id, 'revision' => $prev_revision_id ), get_permalink( $id ) );
+					}
 					$prev_revision_id = $revision_id;
-				} else {
-					$revisions_url = null;
 				}
 
 				echo '<li class="blicki__revision-list-item"><div class="blicki__revision-info"><img class="blicki__revision-avatar" src="' . $avatar . '" />' . sprintf( esc_html_x( '%s by %s on %s', 'Revision by user on date', 'blicki' ), esc_html( Blicki_History::get_event_display_name( $event->event ) ), '<strong>' . esc_html( $username ) . '</strong>', esc_html( $date ) ) . '</div>';
