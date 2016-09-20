@@ -46,7 +46,7 @@ class Blicki_History {
 					'user_name'       => $data['user_name'],
 					'user_email'      => $data['user_email'],
 					'event'           => $type,
-					'event_timestamp' => $data['event_timestamp'],
+					'event_timestamp' => date( 'Y-m-d H:i:s', $data['event_timestamp'] ),
                 )
             );
         }
