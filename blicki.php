@@ -3,7 +3,7 @@
  * Plugin Name: Blicki
  * Plugin URI: http://dev.wp-plugins.org/browser/blicki/
  * Author: Automattic
- * Version: ¯\_(ツ)_/¯
+ * Version: 0.1
  * Author URI: https://automattic.com/
  * Requires at least: 4.6
  * Tested up to: 4.6
