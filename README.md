@@ -13,7 +13,7 @@ A Knowledge Evolution Revolution: Contribute with ease. Watch how information ch
 A Blicki is a blog and a wiki. The purpose is to create a platform on which anyone can share knowledge. The blicki makes it easy to contribute with a front-end blog editor, while showing how information is added to and evolved.
 
 
-###Features
+### Features
 
 * Front-end blog-style editor. No markdown required.
 * Anyone can edit. Visitors do not need to create an account to contribute.
@@ -54,7 +54,7 @@ Nah - we're adding a front-end blog editor, so you can leave the brackets behind
 Of course! That blicki. That blicki wiki.
 
 
-###Why is there a C in Blicki?
+### Why is there a C in Blicki?
 
 The 'C' stands for carrot. Also, bliki.com was registered in 1999 and is unavailable. 
 
